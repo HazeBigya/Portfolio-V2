@@ -6,6 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
+import { MotionConfig } from "framer-motion";
 
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -19,21 +20,34 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap",
   },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="title" content="Bigya Tuladhar - Senior FullStack & Cloud Developer" />
+        <meta name="description" content="With 6+ years architecting full‑stack systems, I specialize in ultra‑low latency livestreaming, real‑time telemetry, AI‑powered analytics, and AWS cost optimization." />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+          html {
+            font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+            --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+          }
+        `,
+          }}
+        />
         <Meta />
         <Links />
       </head>
-      <body>
-        {children}
+      <body className="bg-black text-white antialiased" suppressHydrationWarning>
+        <MotionConfig reducedMotion="user">{children}</MotionConfig>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -62,7 +76,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
+    <main className="pt-16 p-4 container mx-auto bg-black text-white">
       <h1>{message}</h1>
       <p>{details}</p>
       {stack && (
