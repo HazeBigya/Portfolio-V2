@@ -322,6 +322,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       { label: "Valkey sorted set", note: "last-60s actives" },
       { label: "Dashboard", note: "WebSocket subscription" },
     ],
+    diagramImage: "/arch-valkey.webp",
     lesson:
       "WebSockets are magnificent for pushing data down to a select group of clients (a moderator dashboard, live chat). But stateless HTTP heartbeats are the industry standard for ingesting high-concurrency presence telemetry — and pairing them with an in-memory Valkey sorted set creates a resilient, self-cleaning, low-cost system.",
     sections: [
