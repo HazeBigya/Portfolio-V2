@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://bigya.com.np/</loc><priority>1.0</priority></url>
+  <url><loc>https://bigya.com.np/case-studies</loc><priority>0.9</priority></url>
+  <url><loc>https://bigya.com.np/case-studies/iot-core-to-appsync</loc><priority>0.8</priority></url>
+  <url><loc>https://bigya.com.np/case-studies/ai-rag-event-copilot</loc><priority>0.8</priority></url>
+  <url><loc>https://bigya.com.np/case-studies/live-telemetry-valkey</loc><priority>0.8</priority></url>
+  <url><loc>https://bigya.com.np/case-studies/aws-cost-optimization</loc><priority>0.8</priority></url>
+  <url><loc>https://bigya.com.np/ai-demo</loc><priority>0.7</priority></url>
+  <url><loc>https://bigya.com.np/projects</loc><priority>0.7</priority></url>
+</urlset>

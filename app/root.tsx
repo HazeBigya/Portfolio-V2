@@ -30,8 +30,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="title" content="Bigya Tuladhar - Senior FullStack & Cloud Developer" />
-        <meta name="description" content="With 6+ years architecting full‑stack systems, I specialize in ultra‑low latency livestreaming, real‑time telemetry, AI‑powered analytics, and AWS cost optimization." />
+        <meta name="theme-color" content="#0b0b14" />
+        <link rel="icon" href="/favicon.ico" />
         <style
           dangerouslySetInnerHTML={{
             __html: `

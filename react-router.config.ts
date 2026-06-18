@@ -1,8 +1,15 @@
 import type { Config } from "@react-router/dev/config";
+import { caseStudySlugs } from "./lib/case-studies";
 
 export default {
   ssr: false,
-  prerender: ["/"],
+  prerender: [
+    "/",
+    "/ai-demo",
+    "/projects",
+    "/case-studies",
+    ...caseStudySlugs.map((s) => `/case-studies/${s}`),
+  ],
   future: {
     v8_middleware: true,
     v8_splitRouteModules: true,

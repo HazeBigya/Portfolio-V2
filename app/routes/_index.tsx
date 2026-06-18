@@ -8,10 +8,38 @@ import { SectionHeader } from "../../components/section-header";
 import { SiteHeader } from "../../components/site-header";
 import { ExperienceTimeline } from "../../components/experience-timeline";
 import { AIOrbs } from "../../components/ai-orbs";
-import { AIEventCopilot } from "../../components/ai-event-copilot";
 import { HeroAIVisual } from "../../components/hero-ai-visual";
 import { ResumePreview } from "../../components/resume-preview";
 import { SkillBadge } from "../../components/skill-badge";
+import { ProjectCard } from "../../components/project-card";
+import { PROJECTS } from "../../lib/projects";
+import { CASE_STUDIES } from "../../lib/case-studies";
+import { ArrowRight } from "lucide-react";
+import { seo, SITE_URL, SITE_NAME } from "../../lib/seo";
+
+export function meta() {
+  return [
+    ...seo({
+      title: "Bigya Tuladhar — Senior Full-Stack & Cloud Developer (AI, RAG, AWS)",
+      description:
+        "I build AI agents, RAG systems and AI-powered assistants for live enterprise events — plus ultra-low-latency streaming, real-time interaction at scale, and 50–60% AWS cost optimization. 8+ years across the full stack.",
+      path: "/",
+    }),
+    {
+      "script:ld+json": {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: SITE_NAME,
+        jobTitle: "Senior Full-Stack & Cloud Developer",
+        url: SITE_URL,
+        email: "mailto:bigyatuladhar07@gmail.com",
+        address: { "@type": "PostalAddress", addressLocality: "Kathmandu", addressCountry: "Nepal" },
+        sameAs: ["https://www.linkedin.com/in/bigya-tuladhar/", "https://github.com/HazeBigya"],
+        knowsAbout: ["AI Agents", "RAG", "AWS", "AppSync", "Bedrock", "Real-time systems", "Cloud cost optimization"],
+      },
+    },
+  ];
+}
 
 export default function HomePage() {
   return (
@@ -402,12 +430,50 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* AI EVENT COPILOT — concept demo */}
-        <section id="ai-copilot" className="scroll-mt-28 relative">
-          <AIOrbs />
+        {/* CASE STUDIES (preview) */}
+        <section id="case-studies" className="scroll-mt-28 relative">
           <div className="mx-auto max-w-6xl px-6">
-            <SectionHeader eyebrow={"Capability"} title={"AI Event Copilot — concept demo"} />
-            <AIEventCopilot />
+            <SectionHeader eyebrow={"Deep dives"} title={"Case Studies"} />
+            <p className="-mt-4 mb-8 max-w-2xl text-white/70">
+              {"The decisions behind the systems — problem, options, the call I made, and what the numbers did."}
+            </p>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {CASE_STUDIES.slice(0, 3).map((c, i) => (
+                <motion.a
+                  key={c.slug}
+                  href={`/case-studies/${c.slug}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-10%" }}
+                  transition={{ duration: 0.35, ease: "easeOut", delay: i * 0.05 }}
+                  whileHover={{ y: -4, boxShadow: `0 18px 50px -16px ${c.accent}` }}
+                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 transition-colors hover:border-white/20"
+                >
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full opacity-30 blur-3xl"
+                    style={{ background: c.accent }}
+                  />
+                  <div className="relative">
+                    <div className="text-lg font-semibold text-white">{c.title}</div>
+                    <div className="mt-1 text-sm text-white/70">{c.tagline}</div>
+                    <div className="mt-4 inline-flex items-center gap-1 text-sm font-medium" style={{ color: c.accent }}>
+                      {"Read case study"}
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                </motion.a>
+              ))}
+            </div>
+            <div className="mt-8">
+              <a
+                href="/case-studies"
+                className="group inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/5 px-4 py-2 text-sm text-white hover:bg-white/10"
+              >
+                {`View all ${CASE_STUDIES.length} case studies`}
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </a>
+            </div>
           </div>
         </section>
 
@@ -586,136 +652,55 @@ export default function HomePage() {
           <div className="mx-auto max-w-6xl px-6">
             <SectionHeader eyebrow={"Selected"} title={"Projects"} />
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {[
-                {
-                  name: "Nova Dynamic Media",
-                  href: "https://www.novaweb.live/",
-                  img: "/nova-dynamic-media-dashboard.png",
-                  desc: "Enterprise livestreaming platform with AI analytics",
-                },
-                {
-                  name: "Aitken Vanson",
-                  href: "https://aitkenvanson.com/",
-                  img: "/aiteken-vanson-platform.png",
-                  desc: "Financial analytics dashboard with real-time data",
-                },
-                {
-                  name: "Swivt Technologies",
-                  href: "https://swivt.io/",
-                  img: "/swivt-tech-suite.png",
-                  desc: "CMS and booking platforms for multiple industries",
-                },
-                {
-                  name: "Upaya",
-                  href: "https://upaya.com.np/",
-                  img: "/upaya-website.png",
-                  desc: "Core web platform and integrations",
-                },
-                {
-                  name: "Upaya Business Solution",
-                  href: "https://ubs.com.np/",
-                  img: "/ubs-portal.png",
-                  desc: "Business services portal with integrated CRM",
-                },
-                {
-                  name: "Crystal Academy",
-                  href: "https://crystalacademy.org/",
-                  img: "/crystal-academy-ui.png",
-                  desc: "Online learning platform with interactive courses",
-                },
-                {
-                  name: "WorkItPT",
-                  href: "https://workitpt-admin.vercel.app",
-                  img: "/workitpt-admin.png",
-                  desc: "Fitness coaching admin with real-time engagement",
-                },
-                {
-                  name: "Citi977",
-                  href: undefined,
-                  img: "/citi977-ui.png",
-                  desc: "City service portal prototype with live telemetry",
-                },
-                {
-                  name: "Dosro Marketplace",
-                  href: undefined,
-                  img: "/dosro-marketplace-ui.png",
-                  desc: "Second-hand e-commerce with secure payments",
-                },
-                {
-                  name: "Lekhapal Accounting",
-                  href: undefined,
-                  img: "/nepal-business-accounting-ledger-app-ui.png",
-                  desc: "Nepal-focused accounting: ledgers, VAT, invoices, bank reconciliation, and statements.",
-                },
-                {
-                  name: "Landmark Discovery Treks",
-                  href: "https://www.landmarkdiscoverytreks.com/",
-                  img: "/landmark-discovery-treks-homepage.png",
-                  desc: "Trekking website with tour listings, itineraries, and lead capture.",
-                },
-                {
-                  name: "Bitsky.bet",
-                  href: "https://bitsky.bet",
-                  img: "/online-casino-dashboard.png",
-                  desc: "Game integrations, Stripe payments, bonus engine, and operational dashboards.",
-                },
-              ].map((p, i) => {
-                const Card = (
-                  <motion.div
-                    key={p.name}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-10%" }}
-                    transition={{ duration: 0.35, ease: "easeOut", delay: i * 0.05 }}
-                    whileHover={{ y: -4, scale: 1.015, boxShadow: "0 16px 50px -16px rgba(168,85,247,0.45)", transition: { duration: 0.2 } }}
-                    onMouseMove={(e) => {
-                      const r = e.currentTarget.getBoundingClientRect()
-                      e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`)
-                      e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`)
-                      e.currentTarget.style.setProperty("--spot-opacity", "1")
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.setProperty("--spot-opacity", "0")
-                    }}
-                    className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-colors duration-300 hover:border-white/20"
-                  >
-                    <div
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-200"
-                      style={{
-                        opacity: "var(--spot-opacity, 0)",
-                        background:
-                          "radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.12), transparent 60%)",
-                      }}
-                    />
-                    <div className="relative h-40 w-full overflow-hidden">
-                      <img
-                        src={p.img || "/placeholder.svg?height=160&width=480&query=tech%20project%20thumbnail"}
-                        alt={`${p.name} showcase`}
-                        className="h-full w-full object-cover opacity-90 transition duration-500 group-hover:scale-105 group-hover:opacity-100"
-                      />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-80" />
-                    </div>
-                    <div className="p-5">
-                      <div className="flex items-center justify-between">
-                        <div className="text-white">{p.name}</div>
-                        <span className="text-xs text-emerald-300 opacity-0 transition group-hover:opacity-100">
-                          {"Visit ↗"}
-                        </span>
-                      </div>
-                      <div className="mt-1 text-xs text-white/60">{p.desc}</div>
-                    </div>
-                  </motion.div>
-                )
-                return p.href ? (
-                  <a key={p.name} href={p.href} target="_blank" rel="noreferrer">
-                    {Card}
-                  </a>
-                ) : (
-                  Card
-                )
-              })}
+              {PROJECTS.slice(0, 6).map((p, i) => (
+                <ProjectCard key={p.name} project={p} index={i} />
+              ))}
             </div>
+            <div className="mt-8">
+              <a
+                href="/projects"
+                className="group inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/5 px-4 py-2 text-sm text-white hover:bg-white/10"
+              >
+                {`View all ${PROJECTS.length} projects`}
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* AI EVENT COPILOT — teaser linking to the full demo */}
+        <section id="ai-copilot" className="scroll-mt-28 relative">
+          <AIOrbs />
+          <div className="mx-auto max-w-6xl px-6">
+            <SectionHeader eyebrow={"Capability"} title={"AI Event Copilot"} />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-fuchsia-500/10 via-purple-500/10 to-emerald-500/10 p-8"
+            >
+              <p className="max-w-3xl text-lg text-white/80">
+                {
+                  "I build AI copilots for live enterprise events — RAG-grounded Q&A generation, knowledge-base chatbots, and agents that query event data on demand. I put together an interactive, client-side demo of those patterns (fictional data) so you can try it yourself."
+                }
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a
+                  href="/ai-demo"
+                  className="group inline-flex items-center gap-2 rounded-md border-0 bg-gradient-to-r from-fuchsia-500 via-purple-500 to-emerald-400 px-4 py-2 text-sm font-medium text-black hover:opacity-90"
+                >
+                  {"Try the interactive demo"}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </a>
+                <a
+                  href="/case-studies/ai-rag-event-copilot"
+                  className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/5 px-4 py-2 text-sm text-white hover:bg-white/10"
+                >
+                  {"Read the case study"}
+                </a>
+              </div>
+            </motion.div>
           </div>
         </section>
 
@@ -790,6 +775,9 @@ export default function HomePage() {
               </a>
               <a href="#projects" className="hover:text-white">
                 {"Projects"}
+              </a>
+              <a href="/case-studies" className="hover:text-white">
+                {"Case Studies"}
               </a>
               <a href="#resume" className="hover:text-white">
                 {"Résumé"}

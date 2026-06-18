@@ -5,23 +5,26 @@ import { useEffect, useMemo, useState } from "react"
 type Item = { href: string; label: string }
 
 const navItems: Item[] = [
-  { href: "#skills", label: "Skills & Tools" },
-  { href: "#ai-copilot", label: "AI Copilot" },
-  { href: "#experience", label: "Experience" },
-  { href: "#education", label: "Education" },
-  { href: "#projects", label: "Projects" },
-  { href: "#resume", label: "Résumé" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#skills", label: "Skills & Tools" },
+  { href: "/case-studies", label: "Case Studies" },
+  { href: "/#experience", label: "Experience" },
+  { href: "/#education", label: "Education" },
+  { href: "/projects", label: "Projects" },
+  { href: "/#ai-copilot", label: "AI Demo" },
+  { href: "/#resume", label: "Résumé" },
+  { href: "/#contact", label: "Contact" },
 ]
+
+const hashOf = (href: string) => (href.includes("#") ? "#" + href.split("#")[1] : null)
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState<string>("")
   const [scrolled, setScrolled] = useState(false)
 
-  // Scrollspy
+  // Scrollspy (hash items only; route links like /case-studies are skipped)
   useEffect(() => {
-    const ids = navItems.map((n) => n.href.replace("#", ""))
+    const ids = navItems.map((n) => hashOf(n.href)?.slice(1)).filter(Boolean) as string[]
     const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[]
 
     if (!("IntersectionObserver" in window) || els.length === 0) return
@@ -49,14 +52,28 @@ export function SiteHeader() {
   const NavLinks = useMemo(
     () =>
       navItems.map((l) => {
-        const isActive = active ? active === l.href : l.href === "#skills" // default to first section
+        const hash = hashOf(l.href)
+        const isActive = hash ? (active ? active === hash : hash === "#skills") : false
         return (
           <a
             key={l.href}
             href={l.href}
             aria-current={isActive ? "page" : undefined}
             className={`text-sm transition ${isActive ? "text-white" : "text-white/70 hover:text-white"}`}
-            onClick={() => setOpen(false)}
+            onClick={(e) => {
+              setOpen(false)
+              // Same-page hash links: scroll smoothly instead of letting the
+              // router treat "/#id" as a navigation (which caused a flash).
+              if (hash) {
+                const el = document.getElementById(hash.slice(1))
+                if (el) {
+                  e.preventDefault()
+                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                  history.replaceState(null, "", hash)
+                  setActive(hash)
+                }
+              }
+            }}
           >
             {l.label}
           </a>
