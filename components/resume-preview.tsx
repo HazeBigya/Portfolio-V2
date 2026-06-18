@@ -16,7 +16,7 @@ export function ResumePreview() {
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 bg-gradient-to-r from-fuchsia-500/10 via-purple-500/10 to-emerald-500/10 px-5 py-4">
         <div className="flex items-center gap-2 text-sm text-white/80">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 ring-2 ring-emerald-500/50" />
-          {"Bigya Tuladhar — Senior Full-Stack Developer · AI & Cloud"}
+          {"Bigya Tuladhar — Principal Full-Stack & Cloud Engineer · AI & Cloud"}
         </div>
         <div className="flex flex-wrap gap-2">
           <Button

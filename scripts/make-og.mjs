@@ -22,12 +22,12 @@ const svg = `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http:/
   <rect width="1200" height="630" fill="url(#glow)"/>
 
   <g font-family="Inter, Helvetica, Arial, sans-serif">
-    <text x="80" y="150" font-size="26" letter-spacing="6" fill="#9ca3af">SENIOR FULL-STACK &amp; CLOUD DEVELOPER</text>
+    <text x="80" y="150" font-size="25" letter-spacing="5" fill="#9ca3af">PRINCIPAL FULL-STACK &amp; CLOUD ENGINEER</text>
 
     <text x="78" y="290" font-size="120" font-weight="800" fill="#ffffff" letter-spacing="-2">BIGYA</text>
     <text x="78" y="410" font-size="120" font-weight="800" fill="url(#grad)" letter-spacing="-2">TULADHAR</text>
 
-    <text x="80" y="500" font-size="34" fill="#d1d5db">AI Agents · RAG · AWS · Real-time at scale</text>
+    <text x="80" y="500" font-size="32" fill="#d1d5db">AWS Serverless · Generative AI &amp; RAG · Real-time at scale</text>
 
     <text x="80" y="582" font-size="26" fill="#6b7280">bigya.com.np</text>
   </g>

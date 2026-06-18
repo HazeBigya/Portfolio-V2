@@ -20,7 +20,7 @@ import { seo, SITE_URL, SITE_NAME } from "../../lib/seo";
 export function meta() {
   return [
     ...seo({
-      title: "Bigya Tuladhar — Senior Full-Stack & Cloud Developer (AI, RAG, AWS)",
+      title: "Bigya Tuladhar — Principal Full-Stack & Cloud Engineer | AWS Serverless | Generative AI & RAG",
       description:
         "I build AI agents, RAG systems and AI-powered assistants for live enterprise events — plus ultra-low-latency streaming, real-time interaction at scale, and 50–60% AWS cost optimization. 8+ years across the full stack.",
       path: "/",
@@ -30,7 +30,7 @@ export function meta() {
         "@context": "https://schema.org",
         "@type": "Person",
         name: SITE_NAME,
-        jobTitle: "Senior Full-Stack & Cloud Developer",
+        jobTitle: "Principal Full-Stack & Cloud Engineer",
         url: SITE_URL,
         email: "mailto:bigyatuladhar07@gmail.com",
         address: { "@type": "PostalAddress", addressLocality: "Kathmandu", addressCountry: "Nepal" },
@@ -77,7 +77,7 @@ export default function HomePage() {
                     transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                     className="mt-2 block bg-gradient-to-r from-fuchsia-400 via-purple-400 to-emerald-400 bg-[length:200%_auto] bg-clip-text text-2xl font-medium text-transparent sm:text-3xl md:text-4xl"
                   >
-                    {"Senior FullStack & Cloud Developer"}
+                    {"Principal Full-Stack & Cloud Engineer · AWS Serverless · Generative AI & RAG"}
                   </motion.span>
                 </motion.h1>
 
@@ -485,7 +485,7 @@ export default function HomePage() {
               items={[
                 {
                   company: "Nova Dynamic Media",
-                  role: "Senior FullStack Cloud Developer",
+                  role: "Principal Full-Stack & Cloud Engineer",
                   period: "02/2022 – Present · Hong Kong",
                   pillars: ["AI Agents & RAG", "Real‑Time Interaction at Scale", "AWS Cost Optimization"],
                   highlights: [
