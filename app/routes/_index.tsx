@@ -38,6 +38,14 @@ export function meta() {
         knowsAbout: ["AI Agents", "RAG", "AWS", "AppSync", "Bedrock", "Real-time systems", "Cloud cost optimization"],
       },
     },
+    {
+      "script:ld+json": {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: "Bigya Tuladhar",
+        url: SITE_URL,
+      },
+    },
   ];
 }
 
