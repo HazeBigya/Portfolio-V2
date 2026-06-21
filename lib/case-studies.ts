@@ -61,7 +61,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     tagline: "Re-platforming real-time audience interaction for scale",
     accent: "#a855f7",
     duration: "Nova Dynamic Media",
-    role: "Principal Full-Stack & Cloud Engineer",
+    role: "Senior Full-Stack & Cloud Engineer",
     problem:
       "Live Q&A, polls, surveys, quizzes and synchronized slideshows ran on AWS IoT Core / MQTT. IoT Core is excellent for device telemetry, but a raw MQTT Pub/Sub model created real friction for interactive, user-facing live events as audiences scaled: browsers (especially on mobile / unstable networks) had to maintain heavy MQTT client connections; raw Pub/Sub has no strict schema, so the team hand-rolled serialization, payload validation and parsing on both ends; and Pub/Sub delivers messages but holds no application state — showing a poll result or Q&A thread to someone who just refreshed meant separately querying DynamoDB, creating race conditions between the live stream and the state database.",
     options: [
@@ -185,7 +185,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     tagline: "Grounded Q&A, chatbots, and agents over event knowledge",
     accent: "#e879f9",
     duration: "Nova Dynamic Media",
-    role: "Principal Full-Stack & Cloud Engineer",
+    role: "Senior Full-Stack & Cloud Engineer",
     problem:
       "At high-concurrency live events, moderators and speakers were overwhelmed by the volume of real-time interaction (Q&A, polls, surveys) and complex event data. Pulling metrics, summarizing a session, or finding a fact buried in a transcript meant manual reporting or tedious DB queries; a plain LLM couldn't answer about a specific live session because it lacked that event's context; and hallucinated facts are a compliance and reputation disaster mid-webcast.",
     options: [
@@ -293,7 +293,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     tagline: "Stateless heartbeats + Valkey, not WebSockets + Redis",
     accent: "#34d399",
     duration: "Nova Dynamic Media",
-    role: "Principal Full-Stack & Cloud Engineer",
+    role: "Senior Full-Stack & Cloud Engineer",
     problem:
       "Show stream moderators, on a live Mission Control dashboard, exactly how many users are watching a stream right now — for events of 200 to 3,000 concurrent viewers. The obvious pattern (API Gateway WebSockets + DynamoDB listening for $connect/$disconnect) had two fatal flaws: a hard 500-handshakes/second connection wall that throttled thousands of simultaneous joins, and 'ghost users' — dirty mobile disconnects that AWS takes up to 10 minutes to clean up, inflating the live count by ~10%.",
     options: [
@@ -381,7 +381,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     tagline: "How I debugged spend and got performance as a bonus",
     accent: "#f59e0b",
     duration: "Nova Dynamic Media",
-    role: "Principal Full-Stack & Cloud Engineer",
+    role: "Senior Full-Stack & Cloud Engineer",
     problem:
       "AWS spend was climbing faster than usage justified, and a chunk of it was structural waste: a telemetry log table in DynamoDB had swelled past 5TB, cache nodes sat over-provisioned and idle between events, and Lambdas ran on x86 with bloated deployment packages. The goal: cut the bill hard without degrading a live, latency-sensitive product — and ideally make it faster.",
     options: [

@@ -22,7 +22,7 @@ const svg = `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http:/
   <rect width="1200" height="630" fill="url(#glow)"/>
 
   <g font-family="Inter, Helvetica, Arial, sans-serif">
-    <text x="80" y="150" font-size="25" letter-spacing="5" fill="#9ca3af">PRINCIPAL FULL-STACK &amp; CLOUD ENGINEER</text>
+    <text x="80" y="150" font-size="25" letter-spacing="5" fill="#9ca3af">SENIOR FULL-STACK &amp; CLOUD ENGINEER</text>
 
     <text x="78" y="290" font-size="120" font-weight="800" fill="#ffffff" letter-spacing="-2">BIGYA</text>
     <text x="78" y="410" font-size="120" font-weight="800" fill="url(#grad)" letter-spacing="-2">TULADHAR</text>
