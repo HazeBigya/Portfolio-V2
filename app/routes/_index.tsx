@@ -22,7 +22,7 @@ export function meta() {
     ...seo({
       title: "Bigya Tuladhar — Senior Full-Stack & Cloud Engineer | AWS Serverless | Generative AI & RAG",
       description:
-        "I build AI agents, RAG systems and AI-powered assistants for live enterprise events — plus ultra-low-latency streaming, real-time interaction at scale, and 50–60% AWS cost optimization. 8+ years across the full stack.",
+        "I build agentic workflows, RAG systems and AI-powered assistants for live enterprise events — plus ultra-low-latency streaming, real-time interaction at scale, and 50–60% AWS cost optimization. 8+ years across the full stack.",
       path: "/",
     }),
     {
@@ -35,7 +35,7 @@ export function meta() {
         email: "mailto:bigyatuladhar07@gmail.com",
         address: { "@type": "PostalAddress", addressLocality: "Kathmandu", addressCountry: "Nepal" },
         sameAs: ["https://www.linkedin.com/in/bigya-tuladhar/", "https://github.com/HazeBigya"],
-        knowsAbout: ["AI Agents", "RAG", "AWS", "AppSync", "Bedrock", "Real-time systems", "Cloud cost optimization"],
+        knowsAbout: ["Agentic Workflows", "RAG", "AWS", "AppSync", "Bedrock", "Real-time systems", "Cloud cost optimization"],
       },
     },
     {
@@ -96,7 +96,7 @@ export default function HomePage() {
                   className="mt-6 max-w-3xl text-lg text-white/75 sm:text-xl"
                 >
                   {
-                    "I build AI agents, RAG systems, and AI‑powered assistants for live enterprise events — alongside ultra‑low‑latency streaming and real‑time interaction at scale. 8+ years across the full stack, with a track record of cutting AWS costs 40% while improving performance."
+                    "I build agentic workflows, RAG systems, and AI‑powered assistants for live enterprise events — alongside ultra‑low‑latency streaming and real‑time interaction at scale. 8+ years across the full stack, with a track record of cutting AWS costs 40% while improving performance."
                   }
                 </motion.p>
 
@@ -140,7 +140,7 @@ export default function HomePage() {
                   {[
                     "Cloud Architecture",
                     "Real‑Time Systems",
-                    "AI Agents & RAG",
+                    "Agentic Workflows & RAG",
                     "AWS Cost Optimization",
                     "CI/CD & DevOps",
                   ].map((chip, i) => (
@@ -214,8 +214,8 @@ export default function HomePage() {
                   },
                   {
                     icon: <Brain className="h-5 w-5 text-fuchsia-400" />,
-                    k: "AI Agents & RAG",
-                    v: "AWS Bedrock RAG over a vector knowledge base — powering moderator copilots, chatbots, and plain‑language agents.",
+                    k: "Agentic Workflows & RAG",
+                    v: "AWS Bedrock RAG over a vector knowledge base — powering moderator copilots, chatbots, and plain‑language agentic workflows.",
                     cls: "group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-fuchsia-500/10 to-transparent p-6 transition duration-300 hover:border-fuchsia-500/30 hover:from-fuchsia-500/20",
                     spot: "rgba(217,70,239,0.18)",
                   },
@@ -395,7 +395,7 @@ export default function HomePage() {
                 <div className="flex flex-wrap gap-2">
                   {[
                     "RAG",
-                    "AI Agents",
+                    "Agentic Workflows",
                     "Vector DBs",
                     "Embeddings",
                     "Semantic Search",
@@ -428,7 +428,7 @@ export default function HomePage() {
               </div>
               <ul className="mt-3 grid gap-2 text-sm text-white/80 sm:grid-cols-2">
                 <li>{"• RAG system on AWS Bedrock grounding answers in event data"}</li>
-                <li>{"• AI agents for querying live metrics in plain language"}</li>
+                <li>{"• Agentic workflow for querying live metrics in plain language"}</li>
                 <li>{"• Moderator copilot generating and answering audience questions live"}</li>
                 <li>{"• Live and post-event chatbots plus livestream summarization"}</li>
                 <li>{"• AWS AppSync + GraphQL real-time Q&A, polls, surveys, and quizzes"}</li>
@@ -495,13 +495,13 @@ export default function HomePage() {
                   company: "Nova Dynamic Media",
                   role: "Senior Full-Stack & Cloud Engineer",
                   period: "02/2022 – Present · Hong Kong",
-                  pillars: ["AI Agents & RAG", "Real‑Time Interaction at Scale", "AWS Cost Optimization"],
+                  pillars: ["Agentic Workflows & RAG", "Real‑Time Interaction at Scale", "AWS Cost Optimization"],
                   highlights: [
                     "Real‑time audience interaction (live Q&A with upvoting and direct replies, speaker teleprompter, polls, surveys, quizzes, synchronized slideshows) built on AWS AppSync + GraphQL + DynamoDB — migrated from the older IoT Core/MQTT setup for better scale. 50+ productions.",
                     "AI moderator copilot built on an AWS Bedrock RAG system (event content indexed into a vector knowledge base) that generates, groups, and answers audience questions live.",
                     "Live AI chatbot for audiences + a post‑event AI chatbot for asking about the presentation, on the same RAG system.",
                     "Livestream summarization and AI‑driven insight reporting.",
-                    "An AI agent (AWS Bedrock) for querying live user metrics in plain language as an alternative to report generation.",
+                    "An agentic workflow (AWS Bedrock) for querying live user metrics in plain language as an alternative to report generation.",
                     "Created Mission Control, a unified moderator dashboard.",
                     "Telemetry pipeline: Kinesis Firehose → S3 for storage, Redis/Valkey for live stats; processed with AWS Glue + Athena for reports and AI insights.",
                     "Live video transcription and translation with real‑time captions.",
@@ -560,7 +560,7 @@ export default function HomePage() {
                 {
                   company: "Swivt Technologies",
                   role: "Senior FullStack Developer · Web Team Lead",
-                  period: "01/2022 – 12/2023 · Lalitpur, Nepal",
+                  period: "01/2022 – 12/2024 · Lalitpur, Nepal",
                   pillars: ["Custom CMS Platform", "E‑commerce & Booking", "Team Leadership"],
                   highlights: [
                     "Modular CMS powering 12+ client properties (schools, e‑commerce) with reusable components.",

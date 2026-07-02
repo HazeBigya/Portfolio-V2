@@ -60,7 +60,7 @@ const DOC_LINKS: Record<string, string> = {
   "IoT Core": "https://docs.aws.amazon.com/iot/",
   // Emerging Tech
   RAG: "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html",
-  "AI Agents": "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html",
+  "Agentic Workflows": "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html",
   "Vector DBs": "https://en.wikipedia.org/wiki/Vector_database",
   Embeddings: "https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html",
   "Semantic Search": "https://en.wikipedia.org/wiki/Semantic_search",
