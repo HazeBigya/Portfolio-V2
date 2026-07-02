@@ -754,7 +754,7 @@ export default function HomePage() {
                   asChild
                   className="border-0 bg-gradient-to-r from-fuchsia-500 via-purple-500 to-emerald-400 text-black hover:opacity-90"
                 >
-                  <a href="/bigya_cv.pdf" download>
+                  <a href="/Bigya_Tuladhar_CV.pdf" download>
                     <ArrowDownToLine className="mr-2 h-4 w-4" />
                     {"Download Resume"}
                   </a>

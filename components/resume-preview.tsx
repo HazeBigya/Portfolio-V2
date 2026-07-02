@@ -34,7 +34,7 @@ export function ResumePreview() {
             asChild
             className="border-0 bg-gradient-to-r from-fuchsia-500 via-purple-500 to-emerald-400 text-black hover:opacity-90"
           >
-            <a href="/bigya_cv.pdf" download aria-label={"Download résumé as PDF"}>
+            <a href="/Bigya_Tuladhar_CV.pdf" download aria-label={"Download résumé as PDF"}>
               <ArrowDownToLine className="mr-2 h-4 w-4" />
               {"Download PDF"}
             </a>
@@ -54,7 +54,7 @@ export function ResumePreview() {
             className="overflow-hidden"
           >
             <object
-              data="/bigya_cv.pdf#view=FitH"
+              data="/Bigya_Tuladhar_CV.pdf#view=FitH"
               type="application/pdf"
               className="h-[60vh] w-full bg-neutral-900 md:h-[85vh]"
               aria-label={"Résumé preview"}
@@ -62,7 +62,7 @@ export function ResumePreview() {
               <div className="flex flex-col items-center gap-3 px-6 py-16 text-center">
                 <p className="text-sm text-white/70">{"Inline preview isn't supported on this device."}</p>
                 <Button asChild variant="outline" className="border-white/15 bg-white/5 text-white hover:bg-white/10">
-                  <a href="/bigya_cv.pdf" target="_blank" rel="noreferrer">
+                  <a href="/Bigya_Tuladhar_CV.pdf" target="_blank" rel="noreferrer">
                     {"Open résumé in a new tab"}
                   </a>
                 </Button>
