@@ -23,7 +23,7 @@ export function BookingChatPreview() {
         <div className="max-w-[80%] self-start rounded-2xl rounded-tl-sm bg-white/10 px-2.5 py-1.5 text-[10px] leading-snug text-white/85">
           Hi! I can book you in. What day works?
         </div>
-        <div className="max-w-[70%] self-end rounded-2xl rounded-br-sm bg-gradient-to-r from-fuchsia-500 to-purple-500 px-2.5 py-1.5 text-[10px] leading-snug text-white">
+        <div className="max-w-[70%] self-end rounded-2xl rounded-br-sm bg-brand px-2.5 py-1.5 text-[10px] leading-snug text-brand-foreground">
           Tuesday afternoon
         </div>
         <div className="mt-0.5 flex flex-wrap gap-1 self-start">
@@ -44,7 +44,7 @@ export function BookingChatPreview() {
           Type a message
         </div>
         <Mic className="h-3.5 w-3.5 text-white/40" strokeWidth={2} />
-        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-emerald-400 text-black">
+        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand text-brand-foreground">
           <SendHorizonal className="h-3 w-3" strokeWidth={2} />
         </span>
       </div>

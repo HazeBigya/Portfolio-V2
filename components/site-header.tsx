@@ -1,12 +1,14 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { ThemeToggle } from "./theme-toggle"
 
 type Item = { href: string; label: string }
 
 const navItems: Item[] = [
-  { href: "/#skills", label: "Skills & Tools" },
-  { href: "/case-studies", label: "Case Studies" },
+  { href: "/#skills", label: "Skills" },
+  { href: "/#highlight", label: "Highlight" },
+  { href: "/#case-studies", label: "Case Studies" },
   { href: "/#experience", label: "Experience" },
   { href: "/#education", label: "Education" },
   { href: "/projects", label: "Projects" },
@@ -59,7 +61,7 @@ export function SiteHeader() {
             key={l.href}
             href={l.href}
             aria-current={isActive ? "page" : undefined}
-            className={`text-sm transition ${isActive ? "text-white" : "text-white/70 hover:text-white"}`}
+            className={`text-sm transition ${isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
             onClick={(e) => {
               setOpen(false)
               // Same-page hash links: scroll smoothly instead of letting the
@@ -86,39 +88,40 @@ export function SiteHeader() {
     <header
       className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
         scrolled
-          ? "border-white/10 bg-black/60 backdrop-blur"
+          ? "border-hairline bg-background/80 backdrop-blur"
           : "border-transparent bg-transparent"
       }`}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <a href="#" className="group inline-flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_3px] shadow-emerald-500/50" />
-          <span className="bg-gradient-to-r from-fuchsia-300 via-purple-300 to-emerald-300 bg-clip-text text-sm font-semibold text-transparent">
-            {"BIGYA TULADHAR"}
-          </span>
+          <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+          <span className="text-sm font-semibold tracking-tight text-foreground">Bigya Tuladhar</span>
         </a>
 
         <nav className="hidden items-center gap-6 md:flex">{NavLinks}</nav>
 
-        <button
-          className="inline-flex items-center justify-center rounded-md border border-white/10 bg-white/5 p-2 text-white hover:bg-white/10 md:hidden"
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close menu" : "Open menu"}
-        >
-          <span className="sr-only">{open ? "Close" : "Open"} menu</span>
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none">
-            <path
-              d={open ? "M6 18L18 6M6 6l12 12" : "M3 6h18M3 12h18M3 18h18"}
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            className="inline-flex items-center justify-center rounded-full border border-hairline bg-surface p-2 text-foreground md:hidden"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+          >
+            <span className="sr-only">{open ? "Close" : "Open"} menu</span>
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none">
+              <path
+                d={open ? "M6 18L18 6M6 6l12 12" : "M3 6h18M3 12h18M3 18h18"}
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
 
       {open && (
-        <div className="border-t border-white/10 bg-black/70 md:hidden">
+        <div className="border-t border-hairline bg-background/95 md:hidden">
           <nav className="mx-auto max-w-6xl px-6 py-3">
             <div className="flex flex-col gap-3">{NavLinks}</div>
           </nav>

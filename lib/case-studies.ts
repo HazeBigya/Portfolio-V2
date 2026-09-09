@@ -27,6 +27,8 @@ export type CaseStudy = {
   title: string
   tagline: string
   accent: string // hex, drives per-study accent glow
+  /** Featured studies render as a large lead card on the home list. */
+  featured?: boolean
   duration?: string
   role?: string
   /** The situation + the constraint that made it hard. */
@@ -55,6 +57,171 @@ export type CaseStudy = {
 }
 
 export const CASE_STUDIES: CaseStudy[] = [
+  {
+    slug: "ai-booking-assistant",
+    title: "An AI Receptionist That Books Appointments",
+    tagline: "A provider-agnostic booking agent, grounded in a real schedule",
+    accent: "#35d6a4",
+    featured: true,
+    duration: "Personal project",
+    role: "Solo — design, build, ship",
+    demoHref: "https://github.com/HazeBigya/AI-Booking-Assistant",
+    demoLabel: "View on GitHub",
+    problem:
+      "A patient should be able to book an appointment just by chatting, or speaking, the way they would with a good front-desk person. That is easy to demo and hard to trust. A booking assistant must never invent a time or a price, must never book two people into the same slot, and must prove a patient's email is real before it promises a calendar invite. It also should not be welded to a single AI vendor, because the cheapest good model and the best voice rarely come from the same company.",
+    options: [
+      { label: "Free-form LLM answers", verdict: "rejected", note: "A model left to answer freely will cheerfully hallucinate a time or a price that does not exist. Unusable for real bookings." },
+      { label: "Tool-constrained agent over a real database", verdict: "chosen", note: "The model can only call a few functions; every answer comes from the live schedule and price list. It cannot make anything up." },
+      { label: "Single vendor (OpenAI only)", verdict: "rejected", note: "Lock-in, and voice needs a second account anyway. One outage takes the whole assistant down." },
+      { label: "Provider-agnostic adapter", verdict: "chosen", note: "One interface over OpenAI, Anthropic, Gemini and Bedrock. Swapping provider is a settings change; a backup provider answers if the first fails." },
+    ],
+    decision:
+      "A tool-calling agent whose entire power is eight functions over a PostgreSQL schedule. Every value the model produces is validated before a tool runs, the database itself enforces the one rule that must never break (no double-booking), and which AI company does the thinking is a line of config, not a rewrite.",
+    architecture: [
+      "A patient chats or speaks in the browser. The front end sends messages through one HTTP entry and never touches the database directly.",
+      "A thin connector authenticates the request, hands the message to the backend, and returns the answer. It does no thinking of its own.",
+      "The model may only call eight tools (list services, find professionals, check availability, request and verify a login code, list my appointments, create and cancel a booking). It cannot reach the database, the internet or the file system on its own.",
+      "Availability is read from the live schedule with past and already-booked times removed, so the agent can never offer a slot that is taken or gone.",
+      "Booking is email-verified: a 6-digit code proves the address is real before any calendar invite is sent. The code is hashed, single-use, and expires in ten minutes.",
+      "PostgreSQL rejects a second overlapping booking at the moment it is written, one row at a time. If two people tap the same slot in the same second, only one wins.",
+      "The provider is a config choice. One adapter covers OpenAI, Anthropic, Gemini and Bedrock; a backup chain answers the same message if the first provider is slow or down.",
+      "Only the last fifteen messages go to the model. The booking lives in the database, not in the model's memory, so the tools are the memory.",
+    ],
+    results: [
+      { value: "0", metric: "double-bookings — enforced in the database, not app code" },
+      { value: "4 providers", metric: "OpenAI, Anthropic, Gemini, Bedrock — swap by config" },
+      { value: "8 tools", metric: "the agent's entire surface area" },
+      { value: "Voice or text", metric: "same booking path underneath" },
+      { value: "216 tests", metric: "suite runs with no AI or email setup" },
+    ],
+    stack: ["Next.js 14", "TypeScript", "PostgreSQL", "Drizzle", "OpenAI", "Anthropic", "Bedrock", "Docker"],
+    diagram: [
+      { label: "Patient", note: "chat or voice" },
+      { label: "API connector", note: "auth only" },
+      { label: "Agent", note: "8 tools" },
+      { label: "PostgreSQL schedule", note: "source of truth" },
+      { label: "Email code + invite", note: "verified booking" },
+    ],
+    lesson:
+      "Grounding beats cleverness. Constrain the model to a few database-backed tools and let the database enforce the one rule that must never break. The LLM becomes a friendly interface, not the source of truth, and the whole thing stays safe to put in front of real people.",
+    sections: [
+      {
+        heading: "Background",
+        paragraphs: [
+          "This started as a side project I built for myself, to see how far a chat-first booking flow could go while staying genuinely safe. The example is a dental clinic because that is a concrete scheduling problem, but nothing inside is dental: the same product runs a physiotherapy or eye clinic by changing the list of treatments and staff.",
+          "A patient opens a web page, types or speaks, and the assistant answers and books their appointment. It runs on the clinic's own machine, so the patient list stays with them. The only thing that leaves is the conversation itself, sent to the AI company that writes the replies, never the database.",
+        ],
+      },
+      {
+        heading: "How it works",
+        paragraphs: [
+          "A booking reads like a normal front-desk conversation, in a few short messages:",
+        ],
+        bullets: [
+          { label: "Ask", text: "The patient says what they need. The assistant answers from real information: the treatment, the price, which professionals do it, and the times that are actually open." },
+          { label: "Verify", text: "When the patient picks a time, the assistant emails a 6-digit code and asks for it back. That one step proves the email is real, so the confirmation and calendar invite have somewhere to go." },
+          { label: "Book", text: "The assistant writes the appointment and emails a confirmation with the calendar invite attached, so it drops straight into the patient's calendar." },
+        ],
+      },
+      {
+        heading: "What it will not do (on purpose)",
+        paragraphs: [
+          "The safety of the assistant is mostly a list of things it cannot do, and that list is enforced, not merely intended:",
+        ],
+        bullets: [
+          { label: "Never invents", text: "Every time and price comes from the real schedule and price list. There is no tool for making one up." },
+          { label: "Never double-books", text: "The database refuses a second overlapping booking at the moment of writing, so even two taps in the same second cannot collide." },
+          { label: "Never books as someone else", text: "A patient can only see and change their own appointments; the login code, not a password, is what proves who they are." },
+          { label: "Stays in its lane", text: "Asked about anything outside the clinic's treatments and appointments, it says so. It can only do what its tools allow, and there is no tool for anything else." },
+        ],
+      },
+      {
+        heading: "Provider-agnostic by design",
+        paragraphs: [
+          "The product is not tied to any AI company. Most vendors copy the OpenAI message format, so a single adapter already covers OpenAI, Anthropic, Gemini and OpenRouter; adding one of those is a new row in a table, not new code. Bedrock and Google's native API get their own thin adapters.",
+          "Because the assistant uses AI for three separate jobs — the brain that writes replies, the ears that turn speech to text, and the mouth that turns text back to speech — each one chooses its provider independently. A clinic can run a cheap model for the conversation and pay for quality only where the patient actually hears it. Each role also takes a backup chain: if the first provider fails or is slow, the next answers the same message and the patient sees no error.",
+        ],
+      },
+      {
+        heading: "Why PostgreSQL",
+        paragraphs: [
+          "A booking links a patient, a professional and a treatment, and a professional only does some treatments. That is rows and links, which is what a relational database is for. Between the relational options I chose PostgreSQL for one reason: it can refuse two overlapping bookings by itself. My own code might let both through under load, but the database checks at the moment it writes, one write at a time, so the second is rejected. Double-booking is the one mistake this product cannot make, and that guarantee lives in the database, not in hopeful application logic.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "agentcore-qna-grouping",
+    title: "Grouping Live Audience Questions With an Agent",
+    tagline: "Clustering thousands of event questions on Amazon Bedrock AgentCore",
+    accent: "#35d6a4",
+    duration: "Nova Dynamic Media · in progress",
+    role: "Sole owner of the AI platform",
+    problem:
+      "A busy live session generates thousands of audience questions, but most of them are the same handful of concerns asked in different words and different languages. In one real dev session, 7,857 submitted questions carried only 69 distinct meanings. A moderator cannot read all of them live, and simple keyword matching misses paraphrases and cross-language duplicates entirely. The job is to group near-duplicate questions, rank them by how many people asked, let a moderator narrow by topic in plain language, and do all of it reproducibly without ever silently dropping a real question.",
+    options: [
+      { label: "Keyword / exact-match grouping", verdict: "rejected", note: "Misses paraphrases and cross-language duplicates. 'When does it go on sale?' and its Cantonese phrasing never meet." },
+      { label: "Embedding + agglomerative clustering", verdict: "chosen", note: "Group by meaning, not words. Complete linkage makes the similarity floor a hard promise every pair in a group clears." },
+      { label: "Titan v2 embeddings", verdict: "rejected", note: "At its shipped floor, recall on genuine paraphrases was zero; it matched near-identical strings, never rewordings." },
+      { label: "Amazon Nova 2 embeddings", verdict: "chosen", note: "Embeds across languages directly, so a Chinese and English version of one question land close without a translation crutch." },
+    ],
+    decision:
+      "A LangGraph pipeline on Amazon Bedrock AgentCore with a deterministic middle and only its two ends model-driven, both failing open. Questions are normalized, translated to a common language for a shared representative, embedded with Nova 2, then clustered under complete linkage against a similarity floor measured on a hand-labeled set. Infrastructure is provisioned in Terraform.",
+    architecture: [
+      "Read one session's questions from the platform table. The agent is scoped to a single event and session and is strictly read-only; it can never write the platform's data.",
+      "Normalize in code: strip HTML, drop moderator-rejected, blank, or identity-less records. Filtering runs in Python, not as a database filter, so legacy records written before the schema settled are not silently discarded.",
+      "Pivot: translate distinct texts to English so differently-worded and cross-language phrasings collapse onto one representative and share a cache entry.",
+      "Embed the distinct texts with Amazon Nova 2, which handles languages directly. Vectors are cached by content hash and model id, so a re-run is nearly free.",
+      "Cluster agglomeratively under complete linkage: a group forms only when every pair inside it clears a 0.77 similarity floor, so no member sits below the floor relative to another.",
+      "Represent each group by its medoid — the most central real question in the group, so the moderator always sees words an attendee actually wrote.",
+      "Report the shape honestly: '7,857 questions, 69 distinct, found 43'. A moderator can narrow by topic in plain language or cap how many groups are shown.",
+    ],
+    results: [
+      { value: "7,857 → 69", metric: "questions collapsed to distinct meanings, one dev session" },
+      { value: "~100x", metric: "dedup saving on embedding the largest session" },
+      { value: "0.985 AUC", metric: "Nova 2 on a hand-labeled paraphrase benchmark" },
+      { value: "~90s", metric: "warm run on a 69-text session (down from ~16 min cold, unpooled)" },
+      { value: "Read-only", metric: "the agent never writes the platform's data" },
+    ],
+    stack: ["Bedrock AgentCore", "LangGraph", "Amazon Nova 2", "DynamoDB", "Terraform", "Python"],
+    diagram: [
+      { label: "Load", note: "scoped, read-only" },
+      { label: "Normalize", note: "strip + filter" },
+      { label: "Pivot", note: "translate, cached" },
+      { label: "Embed", note: "Nova 2, cached" },
+      { label: "Cluster", note: "complete linkage" },
+      { label: "Report", note: "medoid + demand" },
+    ],
+    lesson:
+      "Keep the deterministic core deterministic and let only the ends be model-driven, both failing open. A moderator can see when nothing was narrowed; they cannot see questions that were silently dropped. So when a stage fails, degrade to a slightly worse grouping, never to nothing.",
+    sections: [
+      {
+        heading: "Background",
+        paragraphs: [
+          "Nova's live events already push real-time questions to moderators. The missing piece was sense-making: when thousands of questions arrive, which concerns actually matter, and how many people share each one. This agent is the answer, and it is the piece I am building now on Amazon Bedrock AgentCore.",
+          "The hard part is not clustering in the abstract. It is doing it reproducibly, across languages, on a corpus that is mostly repetition, without ever dropping a genuine attendee question because of a schema quirk or a model hiccup.",
+        ],
+      },
+      {
+        heading: "Why translate before embedding",
+        paragraphs: [
+          "The pivot to a common language is load-bearing for two reasons. It collapses Traditional and Simplified and English phrasings of one question onto a single string, so they share one cache entry and one embedding, and it gives the moderator a representative they can actually read. Newer multilingual embeddings narrow the gap on raw cross-language matching, but the pivot still earns its place on cost and on display.",
+        ],
+      },
+      {
+        heading: "Choosing the similarity floor",
+        paragraphs: [
+          "The floor is a property of the embedder, not of the problem, so it was measured, not guessed: a hand-labeled set of attendee questions with deliberate near-miss traps (an attendee limit against a poll limit, a free trial against enterprise pricing). The earlier embedder looked fine on a load-test full of literal edit variants but had near-zero recall on genuine rewordings, which is exactly the case that matters. The current floor sits at the benchmark's F1 peak, chosen because under-merging is invisible to a moderator while over-merging is not.",
+        ],
+      },
+      {
+        heading: "Read-only and fail-open",
+        paragraphs: [
+          "Two rules keep the feature safe to ship. The agent reads the platform's data and never writes it; grouping is a derived view stored in the agent's own table, so dropping those records changes nothing else. And every model-driven stage fails open: a text that cannot be translated is grouped in its original language, a text that cannot be embedded is left out, and neither fails the run. A worse grouping always beats returning nothing.",
+        ],
+      },
+    ],
+  },
   {
     slug: "iot-core-to-appsync",
     title: "From IoT Core to AppSync",
@@ -86,7 +253,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       { value: "Faster shipping", metric: "built-in resolvers + validation cut backend boilerplate" },
       { value: "Faster sync", metric: "live updates land in fractions of a second" },
     ],
-    stack: ["AppSync", "GraphQL", "DynamoDB", "Lambda", "WebSockets", "Amazon IVS"],
+    stack: ["AppSync", "GraphQL", "Cognito", "DynamoDB", "Lambda", "WebSockets", "Amazon IVS"],
     diagram: [
       { label: "Moderator / Client", note: "Mission Control" },
       { label: "AppSync", note: "GraphQL mutation" },
@@ -286,6 +453,129 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     demoHref: "/ai-demo",
     demoLabel: "Try the interactive AI demo",
+  },
+  {
+    slug: "ivs-low-latency-streaming",
+    title: "Ultra-Low-Latency Live Streaming on Amazon IVS",
+    tagline: "Real-time video and secure HLS delivery for enterprise events",
+    accent: "#35d6a4",
+    duration: "Nova Dynamic Media",
+    role: "Senior Full-Stack & Cloud Engineer",
+    problem:
+      "Enterprise live events are only real if the video is real-time. Q&A, polls and synchronized slides all refer to what the speaker just said, so a multi-second broadcast delay pulls the interaction out of sync with the moment it belongs to. On top of the live path, a back catalog of over a thousand recorded sessions had to play smoothly across phones and unreliable networks, stay access-controlled for gated content, and not run up a bandwidth bill.",
+    options: [
+      { label: "Standard HLS / RTMP broadcast", verdict: "rejected", note: "Ten to thirty seconds of latency. The audience would be voting on a slide the speaker left half a minute ago." },
+      { label: "Self-managed WebRTC SFU", verdict: "rejected", note: "Owning scaling, TURN servers and recording ourselves — undifferentiated heavy lifting for a small team." },
+      { label: "Amazon IVS low-latency", verdict: "chosen", note: "Managed low-latency playback that scales, and integrates with the rest of the AWS stack the platform already runs on." },
+      { label: "Raw public HLS files for VOD", verdict: "rejected", note: "No access control. Gated and paid sessions need entitlement, not an open URL." },
+    ],
+    decision:
+      "Amazon IVS carries the live low-latency path so the interactive layer stays locked to the stream, a secure HLS pipeline with token-based encryption serves on-demand and gated content, and the legacy library was migrated to adaptive-bitrate HLS with AWS MediaConvert.",
+    architecture: [
+      "Live sessions broadcast through Amazon IVS for low-latency playback, so the audience sees the speaker in near real time.",
+      "The interactive layer (AppSync Q&A, polls, synchronized slides and captions) is held in lockstep with the IVS stream, so a poll or slide lands with the moment it refers to.",
+      "On-demand and gated video is served over HLS with token-based encryption and access control, so only entitled viewers can play a session.",
+      "Over a thousand legacy videos were migrated to adaptive-bitrate HLS with AWS MediaConvert, improving quality across devices and cutting bandwidth against the old single-rate delivery.",
+      "Playback analytics — watch time, framerate, completion — feed the telemetry pipeline that powers reporting and the e-learning progress bar.",
+    ],
+    results: [
+      { value: "Near real-time", metric: "live playback, interaction stays in sync with the stream" },
+      { value: "1,000+ videos", metric: "migrated to adaptive HLS with MediaConvert" },
+      { value: "Lower bandwidth", metric: "adaptive bitrate versus single-rate delivery" },
+      { value: "Access-controlled", metric: "token-based HLS encryption on gated content" },
+      { value: "Multi-device", metric: "smooth playback across phones and weak networks" },
+    ],
+    stack: ["Amazon IVS", "HLS", "AWS MediaConvert", "CloudFront", "AppSync", "KMS"],
+    diagram: [
+      { label: "Broadcast", note: "live session" },
+      { label: "Amazon IVS", note: "low-latency" },
+      { label: "CloudFront edge", note: "global" },
+      { label: "Viewer", note: "in sync with interaction" },
+    ],
+    lesson:
+      "Match the latency budget to the interaction. If the audience acts on what they just saw, the video path has to be real-time; a managed low-latency service for live plus a secured adaptive-HLS path for the library covers both without owning streaming infrastructure.",
+  },
+  {
+    slug: "elearning-platform",
+    title: "An E-Learning Layer for Live Events",
+    tagline: "Verified video progress, quizzes, and certificates at 1000+ users",
+    accent: "#35d6a4",
+    duration: "Nova Dynamic Media",
+    role: "Full-Stack Engineer",
+    problem:
+      "Events needed to double as accredited courses. A viewer's progress through each session had to be tracked against a real completion bar, they had to pass a quiz, and only then earn a certificate that could be verified later. Admins then needed reports across thousands of users, and the naive version of that — fetch everything, format in memory — times out well before a thousand rows.",
+    options: [
+      { label: "Third-party LMS", verdict: "rejected", note: "A separate silo that does not know about the live event, its auth, or its streaming analytics." },
+      { label: "Build on the serverless stack", verdict: "chosen", note: "Reuse the platform's auth, storage and video analytics; the course and the event are one system." },
+      { label: "Compute completion in the browser", verdict: "rejected", note: "Unreliable and gameable. A certificate has to be earned on evidence the server trusts." },
+    ],
+    decision:
+      "A serverless e-learning API, split into viewer and admin services, that tracks real watch progress against a completion threshold, scores quizzes server-side, issues PDF and PNG certificates with unique validation IDs, and generates bulk admin reports built to handle over a thousand users at a time.",
+    architecture: [
+      "The viewer API records watch progress per session and instance (watch time, furthest play position, completion percentage) and marks a course complete only at the threshold — measured against real playback, not a button click.",
+      "Quizzes are submitted and scored on the backend; attempts, best score and pass/fail are tracked, and multiple-choice questions are auto-graded.",
+      "On completion plus a passing score, a certificate is issued as PDF and PNG with a unique validation ID so it can be checked later, and an email notification goes out.",
+      "The admin API generates course-progression, certificate and quiz reports across every user, fetching in parallel and formatting to Excel and CSV.",
+      "Reports are stored in S3 and distributed through CloudFront; parallel fetches and tight DynamoDB queries keep a 1000+ user report inside the Lambda budget.",
+    ],
+    results: [
+      { value: "1,000+ users", metric: "per report, generated without timing out" },
+      { value: "Server-side", metric: "quizzes graded and verified on the backend" },
+      { value: "Verifiable", metric: "PDF/PNG certificates carry a unique validation ID" },
+      { value: "Real progress", metric: "completion tracked to a watch bar, not a click" },
+      { value: "Excel / CSV", metric: "bulk admin reports via S3 and CloudFront" },
+    ],
+    stack: ["Lambda", "DynamoDB", "S3", "CloudFront", "ExcelJS", "PDF-lib", "Node.js 22"],
+    diagram: [
+      { label: "Watch + quiz", note: "viewer API" },
+      { label: "DynamoDB", note: "progress + scores" },
+      { label: "Certificate", note: "PDF/PNG + validation id" },
+      { label: "Admin report", note: "Excel/CSV → S3/CDN" },
+    ],
+    lesson:
+      "Completion has to be earned and verified on the server, or a certificate means nothing. Track real watch progress, grade on the backend, and give every certificate a validation ID so it can be checked long after the event.",
+  },
+  {
+    slug: "ai-event-reporting",
+    title: "AI Reporting and Summaries for Live Events",
+    tagline: "Step Functions aggregation and grounded Bedrock summaries over event data",
+    accent: "#35d6a4",
+    duration: "Nova Dynamic Media · in progress",
+    role: "Sole owner of the AI platform",
+    problem:
+      "After an event, organizers want one comprehensive report — attendees, user activity, login history, Q&A, polls, surveys — plus plain-language summaries and insight. That data is spread across several DynamoDB tables and an Athena telemetry store, one of those queries is asynchronous, and the obvious implementation re-fetches every user's profile inside every report branch. It also cannot hang on a long HTTP request while all of that runs.",
+    options: [
+      { label: "One large Lambda does everything", verdict: "rejected", note: "Times out, cannot cleanly wait on the async Athena query, and every failure restarts the whole thing." },
+      { label: "Step Functions orchestration", verdict: "chosen", note: "Parallel branches, a proper wait-and-poll loop for Athena, and retries per step." },
+      { label: "Re-fetch user profiles per branch", verdict: "rejected", note: "The same batch profile lookup repeated in every report branch — redundant and slow." },
+      { label: "Build one attendee dictionary", verdict: "chosen", note: "Resolve userId to profile once, then hydrate every branch from it." },
+    ],
+    decision:
+      "An HTTP call starts a Step Function that fans out across the report domains and returns an execution id; clients poll for status, so nothing hangs on a long connection. Every branch hydrates from a single attendee dictionary, and Amazon Bedrock (Converse over a Knowledge Base, with role-based model fallback chains) writes the summaries.",
+    architecture: [
+      "The HTTP request starts a Step Function and returns an execution ARN. Clients poll a status endpoint, so there is no long-lived request to time out.",
+      "It fetches the event profile and session list, then builds one attendee dictionary (userId to profile) as the single source of truth for hydration.",
+      "Parallel branches run: user activity from Athena behind a wait-and-choice poll loop, login history from DynamoDB, and Q&A, poll and survey as Map states fanned out over sessions.",
+      "Each branch hydrates names and groups from the attendee dictionary instead of re-querying user profiles, turning many redundant reads into one.",
+      "Bedrock Converse over a Knowledge Base (S3 Vectors) generates transcription summaries, question sets and the comprehensive report, with role-based model fallback chains so one model outage does not stop the run.",
+      "Reports render to Excel and CSV, land in S3, and ship through CloudFront; the report password is encrypted with KMS.",
+    ],
+    results: [
+      { value: "One report", metric: "attendees, activity, logins, QnA, polls, surveys unified" },
+      { value: "Async by design", metric: "Step Functions plus status polling, no long HTTP" },
+      { value: "Fewer reads", metric: "one attendee dictionary hydrates every branch" },
+      { value: "Model fallback", metric: "role-based chains survive a provider outage" },
+      { value: "Grounded", metric: "summaries come from a knowledge base, not free-form text" },
+    ],
+    stack: ["Step Functions", "AWS Bedrock", "Knowledge Base", "Athena", "DynamoDB", "KMS"],
+    diagram: [
+      { label: "Start + attendee dict", note: "single hydration source" },
+      { label: "Parallel branches", note: "Athena, DynamoDB, Map states" },
+      { label: "Bedrock summarize", note: "KB-grounded" },
+      { label: "Report", note: "Excel/CSV → S3/CDN" },
+    ],
+    lesson:
+      "Orchestrate, do not monolith. A Step Function handles the async Athena poll and the parallel fan-out cleanly, and building the user dictionary once turns N redundant profile lookups into one. Keep the AI summaries grounded in a knowledge base so the report reflects the event, not the model's imagination.",
   },
   {
     slug: "live-telemetry-valkey",

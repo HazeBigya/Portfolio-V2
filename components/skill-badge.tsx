@@ -1,8 +1,3 @@
-"use client"
-
-import { motion } from "framer-motion"
-import { ArrowUpRight } from "lucide-react"
-import { Badge } from "./ui/badge"
 import { cn } from "../lib/utils"
 
 /* Official docs for each skill. Anything not listed falls back to a web search,
@@ -78,34 +73,21 @@ function urlFor(name: string) {
   return DOC_LINKS[name] ?? `https://www.google.com/search?q=${encodeURIComponent(name + " documentation")}`
 }
 
+/* A skill tag that links to official docs. Calm by default, brand outline on
+ * hover. No glow, no shimmer, no per-group colour. */
 export function SkillBadge({ name, className }: { name: string; className?: string }) {
   return (
-    <motion.a
+    <a
       href={urlFor(name)}
       target="_blank"
       rel="noreferrer"
       aria-label={`${name} documentation (opens in new tab)`}
-      className="group inline-block rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
-      whileHover={{ y: -3, scale: 1.08 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ type: "spring", stiffness: 400, damping: 22 }}
+      className={cn(
+        "inline-flex items-center rounded-full border border-hairline bg-surface px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-brand/50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+        className,
+      )}
     >
-      <Badge
-        className={cn(
-          "relative cursor-pointer overflow-hidden transition-shadow duration-300 group-hover:shadow-[0_0_20px_-4px_rgba(168,85,247,0.6)]",
-          className,
-        )}
-      >
-        {/* AI scan-shimmer sweep on hover */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
-        />
-        <span className="relative inline-flex items-center">
-          {name}
-          <ArrowUpRight className="ml-0.5 h-3 w-3 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100" />
-        </span>
-      </Badge>
-    </motion.a>
+      {name}
+    </a>
   )
 }

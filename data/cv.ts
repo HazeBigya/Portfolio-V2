@@ -78,10 +78,10 @@ export const META = {
 
 /* -------------------------------------------------------------------- stats */
 
-export const STATS: { label: string; color: Accent }[] = [
-  { label: "40% AWS cost reduction", color: "emerald" },
-  { label: "50K+ concurrent viewers", color: "purple" },
-  { label: "50+ live productions", color: "fuchsia" },
+export const STATS: { value: string; label: string }[] = [
+  { value: "~40%", label: "AWS cost reduction" },
+  { value: "50K+", label: "concurrent viewers" },
+  { value: "50+", label: "live productions" },
 ]
 
 export const HERO_CHIPS = [
@@ -178,6 +178,38 @@ export const SKILL_GROUPS: SkillGroup[] = [
     ],
   },
 ]
+
+/* ----------------------------------------------------------- ai highlight */
+
+export const AI_HIGHLIGHT = {
+  summary:
+    "RAG and agentic workflows on AWS Bedrock, with real-time interaction on AppSync. Every answer is grounded in real event data, autonomous agents reason over live metrics and audience questions, and thousands of attendees stay in sync at once. I own it end to end, from the vector knowledge base and the moderator copilot to the summarization and reporting pipeline.",
+  points: [
+    "RAG system on AWS Bedrock grounding answers in event data",
+    "Agentic workflow for querying live metrics in plain language",
+    "QnA grouping and AI report generation, now on Amazon Bedrock AgentCore (building)",
+    "Moderator copilot generating and answering audience questions live",
+    "Live and post-event chatbots plus livestream summarization",
+    "AWS AppSync + GraphQL real-time Q&A, polls, surveys, and quizzes",
+    "Migrated from IoT Core/MQTT to AppSync for better scale",
+  ],
+} as const
+
+/* Breadth, shown beside the summary so the page reads as a broad engineer, not
+ * an AI-only specialist. These are domains, not the Nova work specifically. */
+export const DOMAINS = [
+  "Full-stack web — React, Next.js, Node, NestJS",
+  "Cloud architecture on AWS, serverless-first",
+  "DevOps and infrastructure as code",
+  "Generative AI — RAG, agents, Bedrock",
+  "Real-time systems and live streaming",
+  "Data and telemetry pipelines",
+] as const
+
+/* Framing for the career-highlight section: the hardest, most involved thing
+ * built, described by what it is, not where. Leads with agents. */
+export const HIGHLIGHT_LEAD =
+  "The hardest and most involved work I have built: a production AI platform for live enterprise events — RAG copilots, agentic workflows, and real-time interaction, owned end to end. It is one part of what I do, not the whole of it."
 
 /* --------------------------------------------------------------- experience */
 
@@ -351,14 +383,25 @@ export const PROJECTS: Project[] = [
     name: "Tissha Cosmetics",
     href: "https://tissha.com/",
     img: "/tissha-homepage.png",
-    desc: "Cosmetics e‑commerce platform I co-founded — built from the ground up.",
+    desc: "Cosmetics e‑commerce platform I co-founded and built from the ground up.",
+  },
+  {
+    name: "Upaya Business Solution",
+    href: "https://ubs.com.np/",
+    img: "/ubs-portal.webp",
+    desc: "One-stop business services platform: registration, compliance, and CRM.",
+  },
+  {
+    name: "Crystal Academy",
+    href: "https://crystalacademy.org/",
+    img: "/crystal-academy-ui.webp",
+    desc: "Online learning platform with courses, tests, and certificates.",
   },
   {
     name: "AI Booking Assistant",
     href: "https://github.com/HazeBigya/AI-Booking-Assistant",
-    img: "",
-    visual: "booking-chat",
-    desc: "Personal side project — an AI receptionist that books appointments by chat or voice. Next.js 14, TypeScript, PostgreSQL/Drizzle, provider‑agnostic LLM (OpenAI, Anthropic, Gemini, Bedrock), grounded in real schedule data.",
+    img: "/ai-booking-assistant.png",
+    desc: "AI receptionist that books by chat or voice, grounded in a real schedule.",
   },
   {
     name: "Aitken Vanson",
@@ -377,18 +420,6 @@ export const PROJECTS: Project[] = [
     href: "https://upaya.com.np/",
     img: "/upaya-website.webp",
     desc: "Core web platform and integrations",
-  },
-  {
-    name: "Upaya Business Solution",
-    href: "https://ubs.com.np/",
-    img: "/ubs-portal.webp",
-    desc: "Business services portal with integrated CRM",
-  },
-  {
-    name: "Crystal Academy",
-    href: "https://crystalacademy.org/",
-    img: "/crystal-academy-ui.webp",
-    desc: "Online learning platform with interactive courses",
   },
   {
     name: "WorkItPT",
@@ -426,4 +457,24 @@ export const PROJECTS: Project[] = [
     img: "/online-casino-dashboard.webp",
     desc: "Game integrations, Stripe wallet, bonus engine, and operational dashboards.",
   },
+]
+
+/* Curated showcase for the home Projects section (order matters). The full list
+ * above still powers the /projects page. */
+const HOME_PROJECT_NAMES = [
+  "Nova Dynamic Media",
+  "Tissha Cosmetics",
+  "Upaya",
+  "AI Booking Assistant",
+  "Upaya Business Solution",
+  "Bitsky.bet",
+]
+export const HOME_PROJECTS: Project[] = HOME_PROJECT_NAMES.map(
+  (n) => PROJECTS.find((p) => p.name === n)!,
+).filter(Boolean)
+
+/* Full list for the /projects page: the showcase order first, then the rest. */
+export const ALL_PROJECTS_ORDERED: Project[] = [
+  ...HOME_PROJECTS,
+  ...PROJECTS.filter((p) => !HOME_PROJECTS.includes(p)),
 ]

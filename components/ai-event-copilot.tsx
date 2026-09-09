@@ -146,9 +146,9 @@ const byId = (id: string) => KB.entries.find((e) => e.id === id)!
 
 /* Shared card styling lifted from the site's design language. */
 const cardCls =
-  "rounded-2xl border border-white/10 bg-white/5 p-5"
+  "rounded-2xl border border-hairline bg-surface p-5"
 const pillCls =
-  "inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-emerald-400/15 via-purple-400/15 to-fuchsia-400/15 px-3 py-1 text-xs text-white ring-1 ring-white/10"
+  "inline-flex items-center gap-1.5 rounded-full bg-brand-weak/60 px-3 py-1 text-xs text-brand ring-1 ring-brand/20"
 
 /* ===========================================================================
  * MODE 1 — AI Q&A GENERATION
@@ -174,12 +174,12 @@ function QAGeneration() {
         <Button
           onClick={generate}
           disabled={phase === "generating"}
-          className="border-0 bg-gradient-to-r from-fuchsia-500 via-purple-500 to-emerald-400 text-black hover:opacity-90"
+          className="bg-brand text-brand-foreground hover:bg-brand/90"
         >
           <Sparkles className="mr-2 h-4 w-4" />
           {phase === "done" ? "Regenerate Questions" : "Generate Questions"}
         </Button>
-        <span className="text-xs text-white/50">
+        <span className="text-xs text-muted-foreground">
           {phase === "generating" ? "Reading knowledge base…" : "Generated from the TechConf 2026 knowledge base"}
         </span>
       </div>
@@ -196,10 +196,10 @@ function QAGeneration() {
                 className={cardCls}
               >
                 <div className="flex items-start gap-2">
-                  <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-fuchsia-300" />
-                  <div className="text-sm font-medium text-white">{it.question}</div>
+                  <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                  <div className="text-sm font-medium text-foreground">{it.question}</div>
                 </div>
-                <div className="mt-3 text-sm text-white/75">{it.answer}</div>
+                <div className="mt-3 text-sm text-muted-foreground">{it.answer}</div>
                 <div className="mt-4">
                   <span className={pillCls}>grounded in: {it.source}</span>
                 </div>
@@ -209,8 +209,8 @@ function QAGeneration() {
       </div>
 
       {phase === "idle" && (
-        <p className="text-sm text-white/40">
-          Press <span className="text-white/70">Generate Questions</span> to see AI-drafted questions and grounded answers.
+        <p className="text-sm text-muted-foreground">
+          Press <span className="text-muted-foreground">Generate Questions</span> to see AI-drafted questions and grounded answers.
         </p>
       )}
     </div>
@@ -309,10 +309,10 @@ function RagChatbot() {
         ref={logRef}
         aria-live="polite"
         aria-label="Chat conversation"
-        className="max-h-80 min-h-[10rem] space-y-3 overflow-y-auto rounded-2xl border border-white/10 bg-black/30 p-4"
+        className="max-h-80 min-h-[10rem] space-y-3 overflow-y-auto rounded-2xl border border-hairline bg-surface-2 p-4"
       >
         {messages.length === 0 && !thinking && !stream && (
-          <p className="text-sm text-white/40">
+          <p className="text-sm text-muted-foreground">
             Ask about TechConf 2026 — or pick a suggested question below.
           </p>
         )}
@@ -331,13 +331,13 @@ function RagChatbot() {
         )}
 
         {thinking && (
-          <div className="flex items-center gap-2 text-white/60">
-            <Bot className="h-4 w-4 text-emerald-300" />
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Bot className="h-4 w-4 text-brand" />
             <span className="flex gap-1" aria-label="Assistant is thinking">
               {[0, 1, 2].map((i) => (
                 <motion.span
                   key={i}
-                  className="h-1.5 w-1.5 rounded-full bg-white/60"
+                  className="h-1.5 w-1.5 rounded-full bg-muted-foreground"
                   animate={{ opacity: [0.3, 1, 0.3] }}
                   transition={{ duration: 1, repeat: Infinity, delay: i * 0.18 }}
                 />
@@ -354,7 +354,7 @@ function RagChatbot() {
             type="button"
             onClick={() => send(e.question)}
             disabled={thinking || !!stream}
-            className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/80 transition hover:bg-white/10 disabled:opacity-40"
+            className="rounded-full border border-hairline bg-surface px-3 py-1.5 text-xs text-muted-foreground transition hover:bg-surface-2 disabled:opacity-40"
           >
             {e.question}
           </button>
@@ -371,12 +371,12 @@ function RagChatbot() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask about the keynote, venue, product…"
-          className="border-white/15 bg-white/5 text-white placeholder:text-white/40"
+          className="border-hairline bg-surface text-foreground placeholder:text-muted-foreground"
         />
         <Button
           type="submit"
           disabled={thinking || !!stream || !input.trim()}
-          className="border-0 bg-gradient-to-r from-fuchsia-500 via-purple-500 to-emerald-400 text-black hover:opacity-90"
+          className="bg-brand text-brand-foreground hover:bg-brand/90"
         >
           <Send className="h-4 w-4" />
           <span className="sr-only">Send</span>
@@ -393,17 +393,17 @@ function Bubble({ role, text, source, streaming }: { role: "user" | "bot"; text:
       <div
         className={
           isUser
-            ? "max-w-[85%] rounded-2xl rounded-br-sm bg-gradient-to-r from-fuchsia-500/20 to-purple-500/20 px-3.5 py-2 text-sm text-white ring-1 ring-white/10"
-            : "max-w-[85%] rounded-2xl rounded-bl-sm border border-white/10 bg-white/5 px-3.5 py-2 text-sm text-white/85"
+            ? "max-w-[85%] rounded-2xl rounded-br-sm bg-brand px-3.5 py-2 text-sm text-brand-foreground"
+            : "max-w-[85%] rounded-2xl rounded-bl-sm border border-hairline bg-surface px-3.5 py-2 text-sm text-foreground/85"
         }
       >
         {!isUser && (
-          <div className="mb-1 flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-emerald-300/80">
+          <div className="mb-1 flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-brand/80">
             <Bot className="h-3 w-3" /> assistant
           </div>
         )}
         <span>{text}</span>
-        {streaming && <span className="ml-0.5 inline-block h-3.5 w-1.5 translate-y-0.5 animate-pulse bg-white/70" />}
+        {streaming && <span className="ml-0.5 inline-block h-3.5 w-1.5 translate-y-0.5 animate-pulse bg-muted-foreground" />}
         {source && (
           <div className="mt-2">
             <span className={pillCls}>grounded in: {source}</span>
@@ -462,8 +462,8 @@ function AgentMode() {
             onClick={() => run(p)}
             className={`rounded-full px-3.5 py-1.5 text-xs transition ring-1 ${
               active?.id === p.id
-                ? "bg-gradient-to-r from-fuchsia-500/25 via-purple-500/25 to-emerald-400/25 text-white ring-white/20"
-                : "border border-white/10 bg-white/5 text-white/80 ring-transparent hover:bg-white/10"
+                ? "bg-brand-weak text-foreground ring-brand/30"
+                : "border border-hairline bg-surface text-muted-foreground ring-transparent hover:bg-surface-2"
             }`}
           >
             {p.label}
@@ -473,7 +473,7 @@ function AgentMode() {
 
       <div aria-live="polite" className={cardCls + " min-h-[12rem]"}>
         {!active && (
-          <p className="text-sm text-white/40">
+          <p className="text-sm text-muted-foreground">
             Pick a question. The agent plans, queries a local dataset, then returns a result.
           </p>
         )}
@@ -497,14 +497,14 @@ function AgentMode() {
                       className={`flex h-5 w-5 items-center justify-center rounded-full text-[11px] ${
                         shown
                           ? isResult
-                            ? "bg-emerald-400 text-black"
-                            : "bg-purple-500/30 text-white ring-1 ring-purple-300/40"
-                          : "bg-white/5 text-white/40"
+                            ? "bg-brand text-brand-foreground"
+                            : "bg-brand-weak text-foreground ring-1 ring-brand/30"
+                          : "bg-surface-2 text-muted-foreground"
                       }`}
                     >
                       {shown ? (isResult ? "✓" : i + 1) : i + 1}
                     </span>
-                    <span className={shown ? "text-white/85" : "text-white/40"}>{step}</span>
+                    <span className={shown ? "text-foreground/85" : "text-muted-foreground"}>{step}</span>
                   </motion.li>
                 )
               })}
@@ -517,11 +517,11 @@ function AgentMode() {
                   initial={reduce ? false : { opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="rounded-xl border border-white/10 bg-black/30 p-4"
+                  className="rounded-xl border border-hairline bg-surface-2 p-4"
                 >
                   <AgentResult render={active.render} reduce={!!reduce} />
-                  <div className="mt-3 text-[11px] text-white/40">
-                    Read from local <code className="text-white/60">{ANALYTICS.dataset}</code>
+                  <div className="mt-3 text-[11px] text-muted-foreground">
+                    Read from local <code className="text-muted-foreground">{ANALYTICS.dataset}</code>
                   </div>
                 </motion.div>
               )}
@@ -537,25 +537,25 @@ function AgentResult({ render, reduce }: { render: AgentPreset["render"]; reduce
   if (render === "stat") {
     return (
       <div>
-        <div className="bg-gradient-to-r from-fuchsia-300 via-purple-300 to-emerald-300 bg-clip-text text-3xl font-semibold text-transparent">
+        <div className="font-num text-3xl font-semibold text-brand">
           {ANALYTICS.totalAttendees.toLocaleString()}
         </div>
-        <div className="mt-1 text-sm text-white/70">total registered attendees · peak {ANALYTICS.peakConcurrent.toLocaleString()} concurrent</div>
+        <div className="mt-1 text-sm text-muted-foreground">total registered attendees · peak {ANALYTICS.peakConcurrent.toLocaleString()} concurrent</div>
       </div>
     )
   }
   if (render === "country") {
     return (
       <div>
-        <div className="text-sm text-white/70">Top country by attendance</div>
-        <div className="mt-1 text-2xl font-semibold text-white">{ANALYTICS.topCountry.name}</div>
+        <div className="text-sm text-muted-foreground">Top country by attendance</div>
+        <div className="mt-1 text-2xl font-semibold text-foreground">{ANALYTICS.topCountry.name}</div>
         <Bar label={ANALYTICS.topCountry.name} value={ANALYTICS.topCountry.pct} reduce={reduce} />
       </div>
     )
   }
   return (
     <div className="space-y-2">
-      <div className="text-sm text-white/70">Device breakdown</div>
+      <div className="text-sm text-muted-foreground">Device breakdown</div>
       {ANALYTICS.devices.map((d) => (
         <Bar key={d.label} label={d.label} value={d.value} reduce={reduce} />
       ))}
@@ -566,13 +566,13 @@ function AgentResult({ render, reduce }: { render: AgentPreset["render"]; reduce
 function Bar({ label, value, reduce }: { label: string; value: number; reduce: boolean }) {
   return (
     <div className="mt-2">
-      <div className="mb-1 flex justify-between text-xs text-white/60">
+      <div className="mb-1 flex justify-between text-xs text-muted-foreground">
         <span>{label}</span>
         <span>{value}%</span>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-surface-2">
         <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 via-purple-500 to-emerald-400"
+          className="h-full rounded-full bg-brand"
           initial={reduce ? false : { width: 0 }}
           animate={{ width: `${value}%` }}
           transition={{ duration: 0.6, ease: "easeOut" }}
@@ -587,20 +587,20 @@ function Bar({ label, value, reduce }: { label: string; value: number; reduce: b
  * SECTION SHELL
  * ========================================================================= */
 const triggerCls =
-  "data-[state=active]:bg-gradient-to-r data-[state=active]:from-fuchsia-500/25 data-[state=active]:via-purple-500/25 data-[state=active]:to-emerald-400/25 data-[state=active]:text-white text-white/60"
+  "data-[state=active]:bg-brand-weak data-[state=active]:text-foreground text-muted-foreground"
 
 export function AIEventCopilot() {
   return (
     <div className="mt-8">
-      <p className="max-w-3xl text-base text-white/75">
+      <p className="max-w-3xl text-base text-muted-foreground">
         I build AI copilots for live enterprise events: RAG-grounded Q&amp;A generation, knowledge-base chatbots, and
         agents that query event data on demand. This is an original, from-scratch recreation of those patterns using
         fictional data — built to show the capability, not a production system.
       </p>
 
-      <div className="mt-6 overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-5 md:p-7">
+      <div className="mt-6 overflow-hidden rounded-3xl border border-hairline bg-surface p-5 md:p-7">
         <Tabs defaultValue="qa" className="gap-6">
-          <TabsList className="h-auto flex-wrap gap-1 rounded-full border border-white/10 bg-black/30 p-1">
+          <TabsList className="h-auto flex-wrap gap-1 rounded-full border border-hairline bg-surface-2 p-1">
             <TabsTrigger value="qa" className={triggerCls}>
               <Sparkles className="mr-1.5 h-4 w-4" /> Q&amp;A Generation
             </TabsTrigger>
@@ -617,16 +617,16 @@ export function AIEventCopilot() {
           <TabsContent value="agent"><AgentMode /></TabsContent>
         </Tabs>
 
-        <p className="mt-6 text-center text-xs text-white/40">
+        <p className="mt-6 text-center text-xs text-muted-foreground">
           Original concept demo · fictional data · runs entirely client-side.
         </p>
       </div>
 
       <div className="mt-5 flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-white/70">Want the architecture behind the real thing?</span>
+        <span className="text-muted-foreground">Want the architecture behind the real thing?</span>
         <a
           href="#contact"
-          className="bg-gradient-to-r from-fuchsia-300 via-purple-300 to-emerald-300 bg-clip-text font-medium text-transparent hover:opacity-80"
+          className="font-medium text-brand hover:text-brand/80"
         >
           Let&apos;s talk →
         </a>

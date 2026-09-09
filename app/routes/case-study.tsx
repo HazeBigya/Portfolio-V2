@@ -23,12 +23,17 @@ export function meta({ params }: { params: { slug?: string } }) {
     {
       "script:ld+json": {
         "@context": "https://schema.org",
-        "@type": "Article",
+        "@type": "TechArticle",
         headline: study.title,
         description: study.tagline,
         author: { "@type": "Person", name: SITE_NAME, url: SITE_URL },
-        mainEntityOfPage: `${SITE_URL}${path}`,
+        publisher: { "@type": "Person", name: SITE_NAME, url: SITE_URL },
+        mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}${path}` },
+        image: `${SITE_URL}/og.png`,
+        inLanguage: "en",
+        articleSection: "Case Study",
         keywords: study.stack.join(", "),
+        about: study.stack.map((s) => ({ "@type": "Thing", name: s })),
       },
     },
   ];
@@ -40,11 +45,11 @@ export default function CaseStudyDetail() {
 
   if (!study) {
     return (
-      <div className="relative min-h-screen overflow-clip bg-black text-white">
+      <div className="relative min-h-screen overflow-clip bg-background text-foreground">
         <SiteHeader />
         <div className="mx-auto flex min-h-screen max-w-4xl flex-col items-center justify-center gap-4 px-6 text-center">
           <h1 className="text-2xl font-semibold">{"Case study not found"}</h1>
-          <a href="/case-studies" className="text-emerald-300 hover:underline">
+          <a href="/case-studies" className="text-brand hover:underline">
             {"← All case studies"}
           </a>
         </div>
@@ -60,7 +65,7 @@ export default function CaseStudyDetail() {
   } as const;
 
   return (
-    <div className="relative min-h-screen overflow-clip bg-black text-white antialiased scroll-smooth">
+    <div className="relative min-h-screen overflow-clip bg-background text-foreground antialiased scroll-smooth">
       <BackgroundFX />
       <SiteHeader />
 
@@ -70,29 +75,29 @@ export default function CaseStudyDetail() {
           <div
             aria-hidden="true"
             className="pointer-events-none absolute right-0 top-10 h-72 w-72 rounded-full opacity-25 blur-3xl"
-            style={{ background: study.accent }}
+            style={{ background: "var(--brand)" }}
           />
           <div className="mx-auto max-w-4xl px-6">
-            <a href="/case-studies" className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white">
+            <a href="/case-studies" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
               <ArrowLeft className="h-4 w-4" />
               {"All case studies"}
             </a>
 
-            <div className="mt-6 flex flex-wrap items-center gap-3 text-xs uppercase tracking-widest text-white/50">
+            <div className="mt-6 flex flex-wrap items-center gap-3 font-num text-xs text-muted-foreground">
               {study.duration && <span>{study.duration}</span>}
-              {study.role && <span className="text-white/30">·</span>}
+              {study.role && <span className="text-muted-foreground">·</span>}
               {study.role && <span>{study.role}</span>}
             </div>
 
             <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">{study.title}</h1>
-            <p className="mt-4 text-lg text-white/70">{study.tagline}</p>
+            <p className="mt-4 text-lg text-muted-foreground">{study.tagline}</p>
 
             <div className="mt-6 flex flex-wrap gap-2">
               {study.stack.map((s) => (
                 <span
                   key={s}
-                  className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white"
-                  style={{ boxShadow: `inset 0 0 0 1px ${study.accent}33` }}
+                  className="rounded-full border border-hairline bg-surface px-3 py-1.5 text-xs text-muted-foreground"
+                  style={{ boxShadow: "none" }}
                 >
                   {s}
                 </span>
@@ -102,8 +107,8 @@ export default function CaseStudyDetail() {
             {study.demoHref && (
               <a
                 href={study.demoHref}
-                className="group mt-6 inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-black"
-                style={{ background: study.accent }}
+                className="group mt-6 inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-brand-foreground"
+                style={{ background: "var(--brand)" }}
               >
                 <Sparkles className="h-4 w-4" />
                 {study.demoLabel ?? "Try the live demo"}
@@ -113,7 +118,7 @@ export default function CaseStudyDetail() {
 
             <div
               className="mt-8 h-1 w-full rounded-full"
-              style={{ background: `linear-gradient(90deg, ${study.accent}, transparent)` }}
+              style={{ background: `linear-gradient(90deg, var(--brand), transparent)` }}
             />
           </div>
         </section>
@@ -123,11 +128,11 @@ export default function CaseStudyDetail() {
           <div className="mx-auto max-w-4xl px-6">
             <motion.div {...reveal} className="grid gap-4 sm:grid-cols-3">
               {study.results.map((r) => (
-                <div key={r.metric} className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                  <div className="text-2xl font-bold" style={{ color: study.accent }}>
+                <div key={r.metric} className="rounded-2xl border border-hairline bg-surface p-5">
+                  <div className="text-2xl font-bold" style={{ color: "var(--brand)" }}>
                     {r.value}
                   </div>
-                  <div className="mt-1 text-sm text-white/70">{r.metric}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{r.metric}</div>
                 </div>
               ))}
             </motion.div>
@@ -137,7 +142,7 @@ export default function CaseStudyDetail() {
         {/* PROBLEM (terse studies only — sectioned studies fold this into their article) */}
         {!study.sections && (
           <Section title="The problem" reveal={reveal}>
-            <p className="text-white/80 leading-relaxed">{study.problem}</p>
+            <p className="text-foreground/85 leading-relaxed">{study.problem}</p>
           </Section>
         )}
 
@@ -151,19 +156,19 @@ export default function CaseStudyDetail() {
                   <div
                     key={o.label}
                     className={`flex gap-3 rounded-2xl border p-4 ${
-                      chosen ? "border-emerald-500/30 bg-emerald-500/5" : "border-white/10 bg-white/5"
+                      chosen ? "border-brand/40 bg-brand-weak/40" : "border-hairline bg-surface"
                     }`}
                   >
                     <div
                       className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${
-                        chosen ? "bg-emerald-400 text-black" : "bg-white/10 text-white/60"
+                        chosen ? "bg-brand text-brand-foreground" : "bg-surface-2 text-muted-foreground"
                       }`}
                     >
                       {chosen ? <Check className="h-4 w-4" /> : <X className="h-4 w-4" />}
                     </div>
                     <div>
-                      <div className="font-medium text-white">{o.label}</div>
-                      <div className="mt-0.5 text-sm text-white/70">{o.note}</div>
+                      <div className="font-medium text-foreground">{o.label}</div>
+                      <div className="mt-0.5 text-sm text-muted-foreground">{o.note}</div>
                     </div>
                   </div>
                 );
@@ -180,7 +185,7 @@ export default function CaseStudyDetail() {
                 href={study.diagramImage}
                 target="_blank"
                 rel="noreferrer"
-                className="block overflow-hidden rounded-2xl border border-white/10 bg-white"
+                className="block overflow-hidden rounded-2xl border border-hairline bg-white"
               >
                 <img
                   src={study.diagramImage}
@@ -191,8 +196,8 @@ export default function CaseStudyDetail() {
                 />
               </a>
             ) : (
-              <div className="overflow-x-auto rounded-2xl border border-white/10 bg-black/30 p-5">
-                <FlowDiagram nodes={study.diagram!} accent={study.accent} />
+              <div className="overflow-x-auto rounded-2xl border border-hairline bg-surface p-5">
+                <FlowDiagram nodes={study.diagram!} accent={"var(--brand)"} />
               </div>
             )}
           </Section>
@@ -203,7 +208,7 @@ export default function CaseStudyDetail() {
           study.sections.map((s) => (
             <Section key={s.heading} title={s.heading} reveal={reveal}>
               {s.paragraphs?.map((p, i) => (
-                <p key={i} className="mt-4 text-[17px] leading-relaxed text-white/80 first:mt-0">
+                <p key={i} className="mt-4 text-[17px] leading-relaxed text-foreground/85 first:mt-0">
                   {p}
                 </p>
               ))}
@@ -213,10 +218,10 @@ export default function CaseStudyDetail() {
                     <li key={i} className="flex gap-3">
                       <span
                         className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full"
-                        style={{ background: study.accent }}
+                        style={{ background: "var(--brand)" }}
                       />
-                      <span className="text-[17px] leading-relaxed text-white/80">
-                        {b.label && <span className="font-semibold text-white">{b.label}: </span>}
+                      <span className="text-[17px] leading-relaxed text-foreground/85">
+                        {b.label && <span className="font-semibold text-foreground">{b.label}: </span>}
                         {b.text}
                       </span>
                     </li>
@@ -228,19 +233,19 @@ export default function CaseStudyDetail() {
         ) : (
           <>
             <Section title="The decision" reveal={reveal}>
-              <p className="text-white/80 leading-relaxed">{study.decision}</p>
+              <p className="text-foreground/85 leading-relaxed">{study.decision}</p>
             </Section>
             <Section title="How it works" reveal={reveal}>
               <ol className="space-y-3">
                 {study.architecture.map((step, i) => (
                   <li key={i} className="flex gap-3">
                     <span
-                      className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-black"
-                      style={{ background: study.accent }}
+                      className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-brand-foreground"
+                      style={{ background: "var(--brand)" }}
                     >
                       {i + 1}
                     </span>
-                    <span className="text-white/80">{step}</span>
+                    <span className="text-foreground/85">{step}</span>
                   </li>
                 ))}
               </ol>
@@ -250,7 +255,7 @@ export default function CaseStudyDetail() {
 
         {/* LESSON */}
         <Section title="What I took away" reveal={reveal}>
-          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-fuchsia-500/10 via-purple-500/10 to-emerald-500/10 p-6 text-lg text-white/85">
+          <div className="rounded-2xl border border-hairline bg-brand-weak/40 p-6 text-lg text-foreground/90">
             {study.lesson}
           </div>
         </Section>
@@ -258,18 +263,18 @@ export default function CaseStudyDetail() {
         {/* CTA */}
         <section className="relative mt-16">
           <div className="mx-auto max-w-4xl px-6">
-            <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/10 bg-white/5 p-6">
-              <div className="text-white/80">{"Want the deeper architecture behind this? Let's talk."}</div>
+            <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-hairline bg-surface p-6">
+              <div className="text-foreground/85">{"Want the deeper architecture behind this? Let's talk."}</div>
               <a
                 href="/#contact"
-                className="inline-flex items-center gap-1 rounded-md border-0 bg-gradient-to-r from-fuchsia-500 via-purple-500 to-emerald-400 px-4 py-2 text-sm font-medium text-black hover:opacity-90"
+                className="inline-flex items-center gap-1.5 rounded-full bg-brand px-5 py-2.5 text-sm font-medium text-brand-foreground hover:bg-brand/90"
               >
                 {"Get in touch"}
                 <ArrowRight className="h-4 w-4" />
               </a>
             </div>
             <div className="mt-8">
-              <a href="/case-studies" className="text-sm text-white/60 hover:text-white">
+              <a href="/case-studies" className="text-sm text-muted-foreground hover:text-foreground">
                 {"← All case studies"}
               </a>
             </div>
@@ -277,12 +282,12 @@ export default function CaseStudyDetail() {
         </section>
       </main>
 
-      <footer className="relative mt-24 border-t border-white/10 bg-black/60 py-10">
+      <footer className="relative mt-24 border-t border-hairline bg-background/80 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
-          <a href="/" className="text-sm text-white/60 hover:text-white">
+          <a href="/" className="text-sm text-muted-foreground hover:text-foreground">
             {"← Bigya Tuladhar"}
           </a>
-          <div className="text-sm text-white/60">
+          <div className="text-sm text-muted-foreground">
             {"© "}
             {new Date().getFullYear()}
             {" BIGYA TULADHAR"}
@@ -306,7 +311,7 @@ function Section({
     <section className="relative mt-14">
       <div className="mx-auto max-w-4xl px-6">
         <motion.div {...reveal}>
-          <h2 className="mb-4 text-sm uppercase tracking-widest text-white/50">{title}</h2>
+          <h2 className="mb-4 font-num text-sm text-brand">{title}</h2>
           {children}
         </motion.div>
       </div>

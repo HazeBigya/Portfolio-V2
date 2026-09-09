@@ -20,17 +20,22 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@300..600&display=swap",
   },
 ];
 
+/* Set the theme class before paint to avoid a flash. Reads the saved choice,
+ * else the OS preference. Runs inline in <head>. */
+const THEME_INIT = `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d);}catch(e){document.documentElement.classList.add('dark');}})();`;
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#0b0b14" />
+        <meta name="theme-color" content="#131317" />
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -39,19 +44,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <link rel="manifest" href="/site.webmanifest" />
         <style
           dangerouslySetInnerHTML={{
-            __html: `
-          html {
-            font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-            --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
-          }
-        `,
+            __html: `html{font-family:'Geist',ui-sans-serif,system-ui,sans-serif;}`,
           }}
         />
         <Meta />
         <Links />
       </head>
-      <body className="bg-black text-white antialiased" suppressHydrationWarning>
+      <body className="bg-background text-foreground antialiased" suppressHydrationWarning>
         <MotionConfig reducedMotion="user">{children}</MotionConfig>
         <ScrollRestoration />
         <Scripts />
@@ -81,7 +80,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto bg-black text-white">
+    <main className="pt-16 p-4 container mx-auto bg-background text-foreground">
       <h1>{message}</h1>
       <p>{details}</p>
       {stack && (

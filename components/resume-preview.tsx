@@ -13,11 +13,11 @@ export function ResumePreview() {
   const reduce = useReducedMotion()
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 bg-gradient-to-r from-fuchsia-500/10 via-purple-500/10 to-emerald-500/10 px-5 py-4">
-        <div className="flex items-center gap-2 text-sm text-white/80">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 ring-2 ring-emerald-500/50" />
-          {`${PROFILE.name} — ${PROFILE.shortTitle} · AI & Cloud`}
+    <div className="overflow-hidden rounded-[14px] border border-hairline bg-surface">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-hairline px-5 py-4">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+          {`${PROFILE.name}, ${PROFILE.shortTitle}`}
         </div>
         <div className="flex flex-wrap gap-2">
           <Button
@@ -26,14 +26,14 @@ export function ResumePreview() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="resume-preview-panel"
-            className="border-white/15 bg-white/5 text-white hover:bg-white/10"
+            className="border-hairline bg-surface text-foreground hover:bg-surface-2"
           >
             {open ? <EyeOff className="mr-2 h-4 w-4" /> : <Eye className="mr-2 h-4 w-4" />}
             {open ? "Hide preview" : "Preview résumé"}
           </Button>
           <Button
             asChild
-            className="border-0 bg-gradient-to-r from-fuchsia-500 via-purple-500 to-emerald-400 text-black hover:opacity-90"
+            className="bg-brand text-brand-foreground hover:bg-brand/90"
           >
             <a href={PROFILE.resumeUrl} download aria-label={"Download résumé as PDF"}>
               <ArrowDownToLine className="mr-2 h-4 w-4" />
@@ -57,12 +57,12 @@ export function ResumePreview() {
             <object
               data="/Bigya_Tuladhar_CV.pdf#view=FitH"
               type="application/pdf"
-              className="h-[60vh] w-full bg-neutral-900 md:h-[85vh]"
+              className="h-[60vh] w-full bg-surface-2 md:h-[85vh]"
               aria-label={"Résumé preview"}
             >
               <div className="flex flex-col items-center gap-3 px-6 py-16 text-center">
-                <p className="text-sm text-white/70">{"Inline preview isn't supported on this device."}</p>
-                <Button asChild variant="outline" className="border-white/15 bg-white/5 text-white hover:bg-white/10">
+                <p className="text-sm text-muted-foreground">{"Inline preview isn't supported on this device."}</p>
+                <Button asChild variant="outline" className="border-hairline bg-surface text-foreground hover:bg-surface-2">
                   <a href="/Bigya_Tuladhar_CV.pdf" target="_blank" rel="noreferrer">
                     {"Open résumé in a new tab"}
                   </a>
