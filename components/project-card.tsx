@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import type { Project } from "../lib/projects"
+import { BookingChatPreview } from "./booking-chat-preview"
 
 export function ProjectCard({ project: p, index = 0 }: { project: Project; index?: number }) {
   const card = (
@@ -32,15 +33,19 @@ export function ProjectCard({ project: p, index = 0 }: { project: Project; index
         }}
       />
       <div className="relative h-40 w-full overflow-hidden">
-        <img
-          src={p.img || "/placeholder.svg"}
-          alt={`${p.name} showcase`}
-          loading="lazy"
-          decoding="async"
-          width={1000}
-          height={400}
-          className="h-full w-full object-cover opacity-90 transition duration-500 group-hover:scale-105 group-hover:opacity-100"
-        />
+        {p.visual === "booking-chat" ? (
+          <BookingChatPreview />
+        ) : (
+          <img
+            src={p.img || "/placeholder.svg"}
+            alt={`${p.name} showcase`}
+            loading="lazy"
+            decoding="async"
+            width={1000}
+            height={400}
+            className="h-full w-full object-cover opacity-90 transition duration-500 group-hover:scale-105 group-hover:opacity-100"
+          />
+        )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-80" />
       </div>
       <div className="p-5">

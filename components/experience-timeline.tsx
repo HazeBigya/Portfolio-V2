@@ -8,6 +8,7 @@ type Item = {
   company: string
   role: string
   period: string
+  note?: string
   highlights: string[]
   tech?: string[]
   pillars?: string[]
@@ -60,6 +61,7 @@ export function ExperienceTimeline({ items }: { items: Item[] }) {
                 <div className="text-sm text-white/60">{it.period}</div>
               </div>
               <div className="mt-1 text-white/70">{it.company}</div>
+              {it.note && <div className="mt-1 text-xs italic text-white/45">{it.note}</div>}
 
               {it.pillars && it.pillars.length > 0 && (
                 <div className="mt-4 flex flex-wrap gap-2">

@@ -16,13 +16,57 @@ import { PROJECTS } from "../../lib/projects";
 import { CASE_STUDIES } from "../../lib/case-studies";
 import { ArrowRight } from "lucide-react";
 import { seo, SITE_URL, SITE_NAME } from "../../lib/seo";
+import { PROFILE, META, STATS, HERO_CHIPS, SKILL_GROUPS, EXPERIENCE, EDUCATION, type Accent } from "../../data/cv";
+
+/* Accent → Tailwind classes for the skill-group cards. */
+const SKILL_ACCENT: Record<Accent, { card: string; title: string; badge: string }> = {
+  fuchsia: {
+    card: "from-fuchsia-500/10",
+    title: "text-fuchsia-300",
+    badge: "border-fuchsia-500/20 bg-fuchsia-500/10 text-white hover:bg-fuchsia-500/20",
+  },
+  purple: {
+    card: "from-purple-500/10",
+    title: "text-purple-300",
+    badge: "border-purple-500/20 bg-purple-500/10 text-white hover:bg-purple-500/20",
+  },
+  amber: {
+    card: "from-amber-500/10",
+    title: "text-amber-300",
+    badge: "border-amber-500/20 bg-amber-500/10 text-white hover:bg-amber-500/20",
+  },
+  rose: {
+    card: "from-rose-500/10",
+    title: "text-rose-300",
+    badge: "border-rose-500/20 bg-rose-500/10 text-white hover:bg-rose-500/20",
+  },
+  emerald: {
+    card: "from-emerald-500/10",
+    title: "text-emerald-300",
+    badge: "border-emerald-500/20 bg-emerald-500/10 text-white hover:bg-emerald-500/20",
+  },
+  blue: {
+    card: "from-blue-500/10",
+    title: "text-blue-300",
+    badge: "border-blue-500/20 bg-blue-500/10 text-white hover:bg-blue-500/20",
+  },
+};
+
+/* Accent → chip dot colour for the hero stat badges. */
+const STAT_ACCENT: Record<Accent, { badge: string; dot: string }> = {
+  emerald: { badge: "border-emerald-500/20 bg-emerald-500/10 hover:bg-emerald-500/20", dot: "bg-emerald-400" },
+  purple: { badge: "border-purple-500/20 bg-purple-500/10 hover:bg-purple-500/20", dot: "bg-purple-400" },
+  fuchsia: { badge: "border-fuchsia-500/20 bg-fuchsia-500/10 hover:bg-fuchsia-500/20", dot: "bg-fuchsia-400" },
+  amber: { badge: "border-amber-500/20 bg-amber-500/10 hover:bg-amber-500/20", dot: "bg-amber-400" },
+  rose: { badge: "border-rose-500/20 bg-rose-500/10 hover:bg-rose-500/20", dot: "bg-rose-400" },
+  blue: { badge: "border-blue-500/20 bg-blue-500/10 hover:bg-blue-500/20", dot: "bg-blue-400" },
+};
 
 export function meta() {
   return [
     ...seo({
-      title: "Bigya Tuladhar — Senior Full-Stack & Cloud Engineer | AWS Serverless | Generative AI & RAG",
-      description:
-        "I build agentic workflows, RAG systems and AI-powered assistants for live enterprise events — plus ultra-low-latency streaming, real-time interaction at scale, and 50–60% AWS cost optimization. 8+ years across the full stack.",
+      title: META.title,
+      description: META.description,
       path: "/",
     }),
     {
@@ -30,19 +74,19 @@ export function meta() {
         "@context": "https://schema.org",
         "@type": "Person",
         name: SITE_NAME,
-        jobTitle: "Senior Full-Stack & Cloud Engineer",
+        jobTitle: PROFILE.shortTitle,
         url: SITE_URL,
-        email: "mailto:bigyatuladhar07@gmail.com",
+        email: `mailto:${PROFILE.email}`,
         address: { "@type": "PostalAddress", addressLocality: "Kathmandu", addressCountry: "Nepal" },
-        sameAs: ["https://www.linkedin.com/in/bigya-tuladhar/", "https://github.com/HazeBigya"],
-        knowsAbout: ["Agentic Workflows", "RAG", "AWS", "AppSync", "Bedrock", "Real-time systems", "Cloud cost optimization"],
+        sameAs: [PROFILE.linkedinUrl, PROFILE.githubUrl],
+        knowsAbout: META.knowsAbout,
       },
     },
     {
       "script:ld+json": {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        name: "Bigya Tuladhar",
+        name: SITE_NAME,
         url: SITE_URL,
       },
     },
@@ -68,7 +112,7 @@ export default function HomePage() {
                   className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70 backdrop-blur"
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 ring-2 ring-emerald-500/60" />
-                  {"Available for senior roles & consulting"}
+                  {PROFILE.availability}
                 </motion.div>
 
                 <motion.h1
@@ -78,14 +122,14 @@ export default function HomePage() {
                   className="mt-5 font-semibold leading-tight tracking-tight"
                 >
                   <span className="block text-6xl font-bold tracking-tighter text-white sm:text-7xl md:text-8xl">
-                    {"BIGYA TULADHAR"}
+                    {PROFILE.name.toUpperCase()}
                   </span>
                   <motion.span
                     animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
                     transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                     className="mt-2 block bg-gradient-to-r from-fuchsia-400 via-purple-400 to-emerald-400 bg-[length:200%_auto] bg-clip-text text-2xl font-medium text-transparent sm:text-3xl md:text-4xl"
                   >
-                    {"Senior Full-Stack & Cloud Engineer · AWS Serverless · Generative AI & RAG"}
+                    {PROFILE.tagline}
                   </motion.span>
                 </motion.h1>
 
@@ -95,55 +139,29 @@ export default function HomePage() {
                   transition={{ duration: 0.7, delay: 0.1 }}
                   className="mt-6 max-w-3xl text-lg text-white/75 sm:text-xl"
                 >
-                  {
-                    "I build agentic workflows, RAG systems, and AI‑powered assistants for live enterprise events — alongside ultra‑low‑latency streaming and real‑time interaction at scale. 8+ years across the full stack, with a track record of cutting AWS costs 40% while improving performance."
-                  }
+                  {PROFILE.heroParagraph}
                 </motion.p>
 
                 {/* Stat chips */}
                 <div className="mt-6 flex flex-wrap items-center gap-3">
-                  {[
-                    { label: "40% AWS cost reduction", color: "emerald" },
-                    { label: "50K+ concurrent viewers", color: "purple" },
-                    { label: "50+ live productions", color: "fuchsia" },
-                  ].map((stat, i) => (
+                  {STATS.map((stat, i) => (
                     <motion.div
                       key={stat.label}
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.15 + i * 0.05 }}
                     >
-                      {stat.color === "emerald" && (
-                        <Badge className="border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5 text-white hover:bg-emerald-500/20">
-                          <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                          {stat.label}
-                        </Badge>
-                      )}
-                      {stat.color === "purple" && (
-                        <Badge className="border-purple-500/20 bg-purple-500/10 px-3 py-1.5 text-white hover:bg-purple-500/20">
-                          <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-purple-400" />
-                          {stat.label}
-                        </Badge>
-                      )}
-                      {stat.color === "fuchsia" && (
-                        <Badge className="border-fuchsia-500/20 bg-fuchsia-500/10 px-3 py-1.5 text-white hover:bg-fuchsia-500/20">
-                          <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-fuchsia-400" />
-                          {stat.label}
-                        </Badge>
-                      )}
+                      <Badge className={`px-3 py-1.5 ${STAT_ACCENT[stat.color].badge}`}>
+                        <span className={`mr-2 inline-block h-1.5 w-1.5 rounded-full ${STAT_ACCENT[stat.color].dot}`} />
+                        {stat.label}
+                      </Badge>
                     </motion.div>
                   ))}
                 </div>
 
                 {/* Animated skill chips */}
                 <div className="mt-8 flex flex-wrap items-center gap-3">
-                  {[
-                    "Cloud Architecture",
-                    "Real‑Time Systems",
-                    "Agentic Workflows & RAG",
-                    "AWS Cost Optimization",
-                    "CI/CD & DevOps",
-                  ].map((chip, i) => (
+                  {HERO_CHIPS.map((chip, i) => (
                     <motion.div
                       key={chip}
                       initial={{ opacity: 0, y: 6 }}
@@ -181,11 +199,11 @@ export default function HomePage() {
 
                 <div className="mt-10">
                   <ContactActions
-                    email={"bigyatuladhar07@gmail.com"}
-                    phone={"+977 9818372334"}
-                    location={"Kathmandu, Nepal"}
-                    linkedinUrl={"https://www.linkedin.com/in/bigya-tuladhar/"}
-                    githubUrl={"https://github.com/HazeBigya"}
+                    email={PROFILE.email}
+                    phone={PROFILE.phone}
+                    location={PROFILE.location}
+                    linkedinUrl={PROFILE.linkedinUrl}
+                    githubUrl={PROFILE.githubUrl}
                   />
                 </div>
 
@@ -279,139 +297,23 @@ export default function HomePage() {
             <SectionHeader eyebrow={"Expertise"} title={"Skills & Tools"} />
 
             <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-                className="rounded-2xl border border-white/10 bg-gradient-to-br from-fuchsia-500/10 to-transparent p-6"
-              >
-                <div className="mb-4 text-base font-medium text-fuchsia-300">{"Frontend Mastery"}</div>
-                <div className="flex flex-wrap gap-2">
-                  {["JavaScript", "TypeScript", "React", "Vue", "jQuery", "Next.js", "Tailwind"].map((s) => (
-                    <SkillBadge key={s} name={s} className="border-fuchsia-500/20 bg-fuchsia-500/10 px-3 py-1.5 text-white hover:bg-fuchsia-500/20" />
-                  ))}
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, ease: "easeOut", delay: 0.05 }}
-                className="rounded-2xl border border-white/10 bg-gradient-to-br from-purple-500/10 to-transparent p-6"
-              >
-                <div className="mb-4 text-base font-medium text-purple-300">{"Backend & APIs"}</div>
-                <div className="flex flex-wrap gap-2">
-                  {["GraphQL", "Serverless", "Node.js", "Express", "REST", "WebSockets", "PHP"].map((s) => (
-                    <SkillBadge key={s} name={s} className="border-purple-500/20 bg-purple-500/10 px-3 py-1.5 text-white hover:bg-purple-500/20" />
-                  ))}
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, ease: "easeOut", delay: 0.1 }}
-                className="rounded-2xl border border-white/10 bg-gradient-to-br from-amber-500/10 to-transparent p-6"
-              >
-                <div className="mb-4 text-base font-medium text-amber-300">{"Data & Storage"}</div>
-                <div className="flex flex-wrap gap-2">
-                  {["Valkey", "Redis", "ElastiCache", "PostgreSQL", "MongoDB", "MySQL", "IndexedDB"].map(
-                    (s) => (
-                      <SkillBadge key={s} name={s} className="border-amber-500/20 bg-amber-500/10 px-3 py-1.5 text-white hover:bg-amber-500/20" />
-                    ),
-                  )}
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, ease: "easeOut", delay: 0.15 }}
-                className="rounded-2xl border border-white/10 bg-gradient-to-br from-rose-500/10 to-transparent p-6"
-              >
-                <div className="mb-4 text-base font-medium text-rose-300">{"DevOps & CI/CD"}</div>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    "AWS CodeBuild",
-                    "CloudFormation",
-                    "Terraform",
-                    "GitHub Actions",
-                    "Docker",
-                    "Jenkins",
-                    "Wowza",
-                    "Monitoring",
-                  ].map(
-                    (s) => (
-                      <SkillBadge key={s} name={s} className="border-rose-500/20 bg-rose-500/10 px-3 py-1.5 text-white hover:bg-rose-500/20" />
-                    ),
-                  )}
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, ease: "easeOut", delay: 0.2 }}
-                className="rounded-2xl border border-white/10 bg-gradient-to-br from-emerald-500/10 to-transparent p-6"
-              >
-                <div className="mb-4 text-base font-medium text-emerald-300">{"AWS Cloud"}</div>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    "Bedrock",
-                    "AppSync",
-                    "Step Functions",
-                    "Kinesis Firehose",
-                    "Glue",
-                    "Athena",
-                    "KMS",
-                    "MediaConvert",
-                    "IVS",
-                    "Lambda",
-                    "DynamoDB",
-                    "S3",
-                    "CloudFront",
-                    "EC2",
-                    "ECS",
-                    "IoT Core",
-                  ].map((s) => (
-                    <SkillBadge key={s} name={s} className="border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5 text-white hover:bg-emerald-500/20" />
-                  ))}
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, ease: "easeOut", delay: 0.25 }}
-                className="rounded-2xl border border-white/10 bg-gradient-to-br from-blue-500/10 to-transparent p-6"
-              >
-                <div className="mb-4 text-base font-medium text-blue-300">{"Emerging Tech"}</div>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    "RAG",
-                    "Agentic Workflows",
-                    "Vector DBs",
-                    "Embeddings",
-                    "Semantic Search",
-                    "LLMs (Claude)",
-                    "HLS",
-                    "WebRTC",
-                    "IoT",
-                    "MQTT",
-                    "Real-time Analytics",
-                    "Edge Computing",
-                    "Hybrid Apps",
-                  ].map((s) => (
-                    <SkillBadge key={s} name={s} className="border-blue-500/20 bg-blue-500/10 px-3 py-1.5 text-white hover:bg-blue-500/20" />
-                  ))}
-                </div>
-              </motion.div>
+              {SKILL_GROUPS.map((group, gi) => (
+                <motion.div
+                  key={group.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, ease: "easeOut", delay: gi * 0.05 }}
+                  className={`rounded-2xl border border-white/10 bg-gradient-to-br ${SKILL_ACCENT[group.accent].card} to-transparent p-6`}
+                >
+                  <div className={`mb-4 text-base font-medium ${SKILL_ACCENT[group.accent].title}`}>{group.title}</div>
+                  <div className="flex flex-wrap gap-2">
+                    {group.items.map((s) => (
+                      <SkillBadge key={s} name={s} className={`px-3 py-1.5 ${SKILL_ACCENT[group.accent].badge}`} />
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
             </div>
 
             {/* AWS Cost Optimization callout */}
@@ -489,128 +391,7 @@ export default function HomePage() {
         <section id="experience" className="scroll-mt-28">
           <div className="mx-auto max-w-6xl px-6">
             <SectionHeader eyebrow={"Career"} title={"Experience"} />
-            <ExperienceTimeline
-              items={[
-                {
-                  company: "Nova Dynamic Media",
-                  role: "Senior Full-Stack & Cloud Engineer",
-                  period: "02/2022 – Present · Hong Kong",
-                  pillars: ["Agentic Workflows & RAG", "Real‑Time Interaction at Scale", "AWS Cost Optimization"],
-                  highlights: [
-                    "Real‑time audience interaction (live Q&A with upvoting and direct replies, speaker teleprompter, polls, surveys, quizzes, synchronized slideshows) built on AWS AppSync + GraphQL + DynamoDB — migrated from the older IoT Core/MQTT setup for better scale. 50+ productions.",
-                    "AI moderator copilot built on an AWS Bedrock RAG system (event content indexed into a vector knowledge base) that generates, groups, and answers audience questions live.",
-                    "Live AI chatbot for audiences + a post‑event AI chatbot for asking about the presentation, on the same RAG system.",
-                    "Livestream summarization and AI‑driven insight reporting.",
-                    "An agentic workflow (AWS Bedrock) for querying live user metrics in plain language as an alternative to report generation.",
-                    "Created Mission Control, a unified moderator dashboard.",
-                    "Telemetry pipeline: Kinesis Firehose → S3 for storage, Redis/Valkey for live stats; processed with AWS Glue + Athena for reports and AI insights.",
-                    "Live video transcription and translation with real‑time captions.",
-                    "Encrypted stored video and reports with AWS KMS.",
-                    "QR‑based check‑in app built with Flutter, plus attendance reporting.",
-                    "Secure HLS delivery with token‑based encryption/decryption and access control; migrated 1000+ videos to adaptive HLS with AWS MediaConvert, improving quality and reducing bandwidth.",
-                    "Cut cloud spend by ~40% via Lambda Graviton migration, EC2 right‑sizing, and DynamoDB capacity tuning.",
-                    "Migrated CI/CD from Jenkins to AWS CodeBuild for consistent releases across microservices.",
-                  ],
-                  tech: [
-                    "AppSync",
-                    "GraphQL",
-                    "Bedrock",
-                    "RAG",
-                    "IVS",
-                    "HLS",
-                    "MediaConvert",
-                    "DynamoDB",
-                    "Redis",
-                    "Valkey",
-                    "Step Functions",
-                    "Kinesis Firehose",
-                    "Glue",
-                    "Athena",
-                    "KMS",
-                    "Flutter",
-                    "CodeBuild",
-                    "AWS",
-                  ],
-                },
-                {
-                  company: "Bitsky.bet",
-                  role: "Senior Full‑Stack Developer / Team Lead",
-                  period: "6 months · 2024 · Remote",
-                  pillars: ["Payments & Bonuses", "Game Integrations", "Ops Dashboards"],
-                  highlights: [
-                    "Integrated games from providers (e.g., Fortune Panda) and configured bonus mechanics.",
-                    "Implemented Stripe for deposits/withdrawals and user balance management.",
-                    "Bonus and points system based on gaming performance.",
-                    "Built internal dashboards for game telemetry, payouts, and incident tracking.",
-                  ],
-                  tech: ["Node.js", "TypeScript", "React", "PostgreSQL", "Stripe", "Docker"],
-                },
-                {
-                  company: "Dosro",
-                  role: "Backend & DevOps Engineer (Side Project)",
-                  period: "2021 – Present",
-                  pillars: ["Scalable E‑commerce Backend", "AWS Infrastructure", "CI/CD Automation"],
-                  highlights: [
-                    "Second‑hand marketplace with microservices backend and real‑time inventory management.",
-                    "Provisioned AWS infra with networking/security and observability; cost optimization built‑in.",
-                    "Jenkins pipelines with containerized services for reliable, repeatable deployments.",
-                  ],
-                  tech: ["AWS", "Jenkins", "Docker", "Node.js", "PostgreSQL", "Redis", "Valkey", "CloudFront"],
-                },
-                {
-                  company: "Swivt Technologies",
-                  role: "Senior FullStack Developer · Web Team Lead",
-                  period: "01/2022 – 12/2024 · Lalitpur, Nepal",
-                  pillars: ["Custom CMS Platform", "E‑commerce & Booking", "Team Leadership"],
-                  highlights: [
-                    "Modular CMS powering 12+ client properties (schools, e‑commerce) with reusable components.",
-                    "Booking system that increased reservations by 100% with integrated analytics and A/B testing.",
-                    "Stripe payments with high availability; Cloudflare performance optimizations across sites.",
-                    "Agile leadership of 5–8 engineers; introduced CI/CD and code review to reduce regressions.",
-                  ],
-                  tech: ["React", "Node.js", "Stripe", "Cloudflare", "GoDaddy", "Jira", "Trello", "MySQL"],
-                },
-                {
-                  company: "Upaya Business Solutions",
-                  role: "Full Stack Developer",
-                  period: "12/2018 – 01/2022 · Kathmandu, Nepal",
-                  pillars: ["ERP/CRM", "Compliance Workflows", "Hybrid Apps"],
-                  highlights: [
-                    "ERP with accounting & CRM across multiple departments; role‑based access and audit trails.",
-                    "Company registration/renewal workflows and compliance deadline tracking dashboards.",
-                    "Search across 1M+ records in 0.3–0.7 seconds using IndexedDB and optimized algorithms.",
-                    "Automated reporting cadence (daily/weekly/monthly), saving 15+ engineer hours weekly.",
-                    "5 hybrid mobile apps with offline‑first data sync and conflict resolution.",
-                  ],
-                  tech: ["IndexedDB", "Node.js", "MongoDB", "Cordova", "JavaScript", "REST APIs"],
-                },
-                {
-                  company: "Upaya (Logistics)",
-                  role: "Full Stack Developer",
-                  period: "06/2018 – 02/2019 · Kathmandu, Nepal",
-                  pillars: ["End‑to‑End Logistics Partner", "Real‑Time GPS Tracking", "Dynamic Pricing"],
-                  highlights: [
-                    "Built end‑to‑end logistics features for B2B parcel delivery: order intake, routing, and proof of delivery.",
-                    "Geofenced GPS tracking that improved on‑time delivery by 40% with live fleet telemetry.",
-                    "Dynamic pricing engine using route length, vehicle type, traffic patterns, and demand.",
-                    "Customer service portal with status tracking, SLA alerts, and proactive notifications.",
-                  ],
-                  tech: ["Node.js", "PostgreSQL", "React", "Google Maps API", "WebSockets", "Redis"],
-                },
-                {
-                  company: "Xena Tech Nepal",
-                  role: "Web Developer (Contract)",
-                  period: "5 months · 2018 · Kathmandu, Nepal",
-                  pillars: ["Laravel & WordPress", "SEO", "Travel Websites"],
-                  highlights: [
-                    "Delivered travel/tourism websites with custom Laravel modules and WordPress themes.",
-                    "Implemented on‑page SEO and performance improvements for better discovery.",
-                    "Set up forms, booking flows, and content workflows tailored for agencies.",
-                  ],
-                  tech: ["Laravel", "WordPress", "PHP", "MySQL", "SEO", "cPanel"],
-                },
-              ]}
-            />
+            <ExperienceTimeline items={EXPERIENCE} />
           </div>
         </section>
 
@@ -626,11 +407,9 @@ export default function HomePage() {
                 transition={{ duration: 0.35, ease: "easeOut" }}
                 className="rounded-3xl border border-white/10 bg-white/5 p-6 md:p-7"
               >
-                <div className="text-xl font-medium text-white">{"BACHELOR'S Degree in Information Management"}</div>
-                <div className="mt-1 text-white/70">{"Tribhuvan University · 2014 – 2018"}</div>
-                <div className="mt-4 text-sm text-white/80">
-                  {"Foundations in information systems, software engineering, and data—applied to production systems."}
-                </div>
+                <div className="text-xl font-medium text-white">{EDUCATION.degree}</div>
+                <div className="mt-1 text-white/70">{`${EDUCATION.school} · ${EDUCATION.period}`}</div>
+                <div className="mt-4 text-sm text-white/80">{EDUCATION.blurb}</div>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -641,13 +420,11 @@ export default function HomePage() {
               >
                 <div className="text-sm uppercase tracking-widest text-white/70">{"Focus Areas"}</div>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {["Software Engineering", "Databases", "Cloud & Networking", "Human‑Computer Interaction"].map(
-                    (s) => (
-                      <Badge key={s} className="border-white/10 bg-white/5 px-3 py-1.5 text-white">
-                        {s}
-                      </Badge>
-                    ),
-                  )}
+                  {EDUCATION.focus.map((s) => (
+                    <Badge key={s} className="border-white/10 bg-white/5 px-3 py-1.5 text-white">
+                      {s}
+                    </Badge>
+                  ))}
                 </div>
               </motion.div>
             </div>
@@ -743,10 +520,11 @@ export default function HomePage() {
               </p>
               <div className="mt-6">
                 <ContactActions
-                  email={"bigyatuladhar07@gmail.com"}
-                  phone={"+977 9818372334"}
-                  location={"Kathmandu, Nepal"}
-                  linkedinUrl={"https://www.linkedin.com/in/bigya-tuladhar/"}
+                  email={PROFILE.email}
+                  phone={PROFILE.phone}
+                  location={PROFILE.location}
+                  linkedinUrl={PROFILE.linkedinUrl}
+                  githubUrl={PROFILE.githubUrl}
                 />
               </div>
               <div className="mt-6">
@@ -754,7 +532,7 @@ export default function HomePage() {
                   asChild
                   className="border-0 bg-gradient-to-r from-fuchsia-500 via-purple-500 to-emerald-400 text-black hover:opacity-90"
                 >
-                  <a href="/Bigya_Tuladhar_CV.pdf" download>
+                  <a href={PROFILE.resumeUrl} download>
                     <ArrowDownToLine className="mr-2 h-4 w-4" />
                     {"Download Resume"}
                   </a>

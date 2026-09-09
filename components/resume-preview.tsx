@@ -4,6 +4,7 @@ import { useState } from "react"
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { ArrowDownToLine, Eye, EyeOff } from "lucide-react"
 import { Button } from "./ui/button"
+import { PROFILE } from "../data/cv"
 
 /* Résumé card: PDF preview is collapsed by default and revealed on demand via
  * the Preview toggle. Download is always available. */
@@ -16,7 +17,7 @@ export function ResumePreview() {
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 bg-gradient-to-r from-fuchsia-500/10 via-purple-500/10 to-emerald-500/10 px-5 py-4">
         <div className="flex items-center gap-2 text-sm text-white/80">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 ring-2 ring-emerald-500/50" />
-          {"Bigya Tuladhar — Senior Full-Stack & Cloud Engineer · AI & Cloud"}
+          {`${PROFILE.name} — ${PROFILE.shortTitle} · AI & Cloud`}
         </div>
         <div className="flex flex-wrap gap-2">
           <Button
@@ -34,7 +35,7 @@ export function ResumePreview() {
             asChild
             className="border-0 bg-gradient-to-r from-fuchsia-500 via-purple-500 to-emerald-400 text-black hover:opacity-90"
           >
-            <a href="/Bigya_Tuladhar_CV.pdf" download aria-label={"Download résumé as PDF"}>
+            <a href={PROFILE.resumeUrl} download aria-label={"Download résumé as PDF"}>
               <ArrowDownToLine className="mr-2 h-4 w-4" />
               {"Download PDF"}
             </a>
